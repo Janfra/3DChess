@@ -38,11 +38,10 @@ public class UnitManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("Pawn is null!");
+                    Debug.LogWarning("Pawn in SpawnPieces() is null!");
                 }
                 break;
             default:
-                //Debug.LogError("Unknown Piece Type!");
                 break;
         }
     }

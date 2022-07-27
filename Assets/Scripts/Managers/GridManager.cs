@@ -86,6 +86,7 @@ public class GridManager : MonoBehaviour
         foreach (var tile in highlightedTiles)
         {
             tile.StopHighlight();
+            tile.isInRange = false;
         }
         highlightedTiles.Clear();
     }

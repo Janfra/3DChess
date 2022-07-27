@@ -93,9 +93,8 @@ public class BasePiece : MonoBehaviour
             if (isPawn) break;
         }
     }
-    private bool DirectionCheck(int direction)
+    protected bool DirectionCheck(int direction)
     {
-        direction++;
         if (direction % 2 == 0)
         {
             return false;
@@ -105,7 +104,7 @@ public class BasePiece : MonoBehaviour
             return true;
         }
     }
-    private void SetZTiles(int gridMovement, bool isOffset)
+    virtual protected void SetZTiles(int gridMovement, bool isOffset)
     {
         bool isPieceBlocking = false;
         for (int newPos = 0; newPos < gridMovement; newPos += GridManager.TileDistance)
@@ -123,7 +122,7 @@ public class BasePiece : MonoBehaviour
             if (isPieceBlocking) break;
         }
     }
-    private void SetXTiles(int gridMovement, bool isOffset)
+    virtual protected void SetXTiles(int gridMovement, bool isOffset)
     {
         bool isPieceBlocking = false;
         for (int newPos = 0; newPos < gridMovement; newPos += GridManager.TileDistance)
@@ -141,7 +140,7 @@ public class BasePiece : MonoBehaviour
             if (isPieceBlocking) break;
         }
     }
-    private void SetLeftHorizontalTiles(int gridMovement, bool isOffset)
+    virtual protected void SetLeftHorizontalTiles(int gridMovement, bool isOffset)
     {
         bool isPieceBlocking = false;
         for (int newPos = 0; newPos < gridMovement; newPos += GridManager.TileDistance)
@@ -159,7 +158,7 @@ public class BasePiece : MonoBehaviour
             if (isPieceBlocking) break;
         }
     }
-    private void SetRightHorizontalTiles(int gridMovement, bool isOffset)
+    virtual protected void SetRightHorizontalTiles(int gridMovement, bool isOffset)
     {
         bool isPieceBlocking = false;
         for (int newPos = 0; newPos < gridMovement; newPos += GridManager.TileDistance)
@@ -177,7 +176,7 @@ public class BasePiece : MonoBehaviour
             if (isPieceBlocking) break;
         }
     }
-    private bool PiecePlacementCheck(Tile tile)
+    protected bool PiecePlacementCheck(Tile tile)
     {
         tile.isInRange = true;
         if (tile.OccupiedPiece != null) return true; else return false;

@@ -9,14 +9,13 @@ public class PlayerPiece : BasePiece
         switch (pieceInfo.PieceName)
         {
             case Piece.Pawn:
-                PawnMovementHighlight();
+                SetInRange(2, false, true);
                 break;
             case Piece.Knight:
                 break;
             case Piece.Bishop:
                 break;
             case Piece.Tower:
-                HighlightLine();
                 break;
             case Piece.Queen:
                 break;
@@ -27,80 +26,83 @@ public class PlayerPiece : BasePiece
         }
     }
 
-    private void PawnMovementHighlight()
+    protected override void SetZTiles(int gridMovement, bool isOffset)
     {
-        int gridMovement = 2;
-        HightlightTop(gridMovement);
-    }
-
-    private void HighlightLine()
-    {
-        int gridMovement = 8;
-        HightlightTop(gridMovement);
-        HightlightRight(gridMovement);
-        HightlightBottom(gridMovement);
-        HightlightLeft(gridMovement);
-    }
-
-    private void HighlightHorizontal()
-    {
-
-    }
-
-    private void HightlightTop(int gridMovement)
-    {
-        Tile highlightTile;
-
-        for (int i = 0; i < gridMovement; i += GridManager.TileDistance)
+        bool isPieceBlocking = false;
+        for (int newPos = 0; newPos < gridMovement; newPos += GridManager.TileDistance)
         {
-            highlightTile = GridManager.Instance.GetTileAtPosition(new Vector3(OcuppiedTile.transform.position.x, OcuppiedTile.transform.position.y, OcuppiedTile.transform.position.z + i + GridManager.TileDistance));
-            if (highlightTile)
+            Tile tile = GetZTile(newPos, isOffset);
+            if (tile)
             {
-                GridManager.Instance.HighlightTile(highlightTile);
-                if (highlightTile.OccupiedPiece != null) break;
+                isPieceBlocking = PiecePlacementCheck(tile);
+                GridManager.Instance.HighlightTile(tile);
             }
+            else
+            {
+                Debug.Log($"There is no tile in SetZTiles(), iteration number: {newPos}");
+                break;
+            }
+            if (isPieceBlocking) break;
         }
     }
-    private void HightlightLeft(int gridMovement)
-    {
-        Tile highlightTile;
 
-        for (int i = 0; i < gridMovement; i += GridManager.TileDistance)
+    protected override void SetXTiles(int gridMovement, bool isOffset)
+    {
+        bool isPieceBlocking = false;
+        for (int newPos = 0; newPos < gridMovement; newPos += GridManager.TileDistance)
         {
-            highlightTile = GridManager.Instance.GetTileAtPosition(new Vector3(OcuppiedTile.transform.position.x - i - GridManager.TileDistance, OcuppiedTile.transform.position.y, OcuppiedTile.transform.position.z));
-            if (highlightTile)
+            Tile tile = GetXTile(newPos, isOffset);
+            if (tile)
             {
-                GridManager.Instance.HighlightTile(highlightTile);
-                if (highlightTile.OccupiedPiece != null) break;
+                isPieceBlocking = PiecePlacementCheck(tile);
+                GridManager.Instance.HighlightTile(tile);
             }
+            else
+            {
+                Debug.Log($"There is no tile in SetXTiles(), iteration number: {newPos}");
+                break;
+            }
+            if (isPieceBlocking) break;
         }
     }
-    private void HightlightRight(int gridMovement)
-    {
-        Tile highlightTile;
 
-        for (int i = 0; i < gridMovement; i += GridManager.TileDistance)
+    protected override void SetLeftHorizontalTiles(int gridMovement, bool isOffset)
+    {
+        bool isPieceBlocking = false;
+        for (int newPos = 0; newPos < gridMovement; newPos += GridManager.TileDistance)
         {
-            highlightTile = GridManager.Instance.GetTileAtPosition(new Vector3(OcuppiedTile.transform.position.x + i + GridManager.TileDistance, OcuppiedTile.transform.position.y, OcuppiedTile.transform.position.z));
-            if (highlightTile)
+            Tile tile = GetLeftHorizontalTile(newPos, isOffset);
+            if (tile)
             {
-                GridManager.Instance.HighlightTile(highlightTile);
-                if (highlightTile.OccupiedPiece != null) break;
+                isPieceBlocking = PiecePlacementCheck(tile);
+                GridManager.Instance.HighlightTile(tile);
             }
+            else
+            {
+                Debug.Log($"There is no tile in SetZTiles(), iteration number: {newPos}");
+                break;
+            }
+            if (isPieceBlocking) break;
         }
     }
-    private void HightlightBottom(int gridMovement)
-    {
-        Tile highlightTile;
 
-        for (int i = 0; i < gridMovement; i += GridManager.TileDistance)
+    protected override void SetRightHorizontalTiles(int gridMovement, bool isOffset)
+    {
+        bool isPieceBlocking = false;
+        for (int newPos = 0; newPos < gridMovement; newPos += GridManager.TileDistance)
         {
-            highlightTile = GridManager.Instance.GetTileAtPosition(new Vector3(OcuppiedTile.transform.position.x, OcuppiedTile.transform.position.y, OcuppiedTile.transform.position.z - i - GridManager.TileDistance));
-            if (highlightTile)
+            Tile tile = GetRightHorizontalTile(newPos, isOffset);
+            if (tile)
             {
-                GridManager.Instance.HighlightTile(highlightTile);
-                if (highlightTile.OccupiedPiece != null) break;
+                isPieceBlocking = PiecePlacementCheck(tile);
+                GridManager.Instance.HighlightTile(tile);
             }
+            else
+            {
+                Debug.Log($"There is no tile in SetZTiles(), iteration number: {newPos}");
+                break;
+            }
+            if (isPieceBlocking) break;
         }
     }
 }
