@@ -17,8 +17,6 @@ public class GridManager : MonoBehaviour
     private const float yPos = -4.5f;
     private const float zOffset = 3.5f;
     public const int TileDistance = 1;
-    // Max move distance is also the same amount of max directions a piece can be moved, so they are shared.
-    public const int MaxMoveDistance = 8;
 
 
     private void Awake()

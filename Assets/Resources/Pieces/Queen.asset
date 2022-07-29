@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd13981f85df2f44aa664b3a27a85ec, type: 3}
   m_Name: Queen
   m_EditorClassIdentifier: 
-  typePrefab: {fileID: 0}
+  typePrefab: {fileID: 7767080992341402993, guid: 0ee0198faf1448f489c6f5eaede43486, type: 3}
   PieceName: 4
+  faction: 0

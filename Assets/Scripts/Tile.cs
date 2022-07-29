@@ -65,6 +65,7 @@ public class Tile : MonoBehaviour
                 if (isWalkable && isInRange)
                 {
                     SetPiece(unitManager.SelectedPiece);
+                    unitManager.CheckFirstMove();
                     unitManager.SetSelectedPiece(null);
                     GridManager.Instance.UnhighlightMoveTiles();
                 }

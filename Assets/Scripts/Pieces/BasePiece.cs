@@ -33,65 +33,9 @@ public class BasePiece : MonoBehaviour
     #endregion
 
     #region Movement
-
-    public void MovePiece()
+    virtual protected void SetInRange()
     {
-        switch (pieceInfo.PieceName)
-        {
-            case Piece.Pawn:
-                break;
-            case Piece.Knight:
-                break;
-            case Piece.Bishop:
-                break;
-            case Piece.Tower:
-                break;
-            case Piece.Queen:
-                break;
-            case Piece.King:
-                break;
-            default:
-                break;
-        }
-    }
-    protected void SetInRange(int gridMovement, bool onlyHorizontal, bool isPawn)
-    {
-        for (int directions = 0; directions < GridManager.MaxMoveDistance; directions++)
-        {
-            bool isOffset = DirectionCheck(directions);
-            if (onlyHorizontal) directions += 4;
-
-            switch (directions)
-            {
-                case 0:
-                    SetZTiles(gridMovement, isOffset);
-                    break;
-                case 1:
-                    SetZTiles(gridMovement, isOffset);
-                    break;
-                case 2:
-                    SetXTiles(gridMovement, isOffset);
-                    break;
-                case 3:
-                    SetXTiles(gridMovement, isOffset);
-                    break;
-                case 4:
-                    SetLeftHorizontalTiles(gridMovement, isOffset);
-                    break;
-                case 5:
-                    SetLeftHorizontalTiles(gridMovement, isOffset);
-                    break;
-                case 6:
-                    SetRightHorizontalTiles(gridMovement, isOffset);
-                    break;
-                case 7:
-                    SetRightHorizontalTiles(gridMovement, isOffset);
-                    break;
-                default:
-                    break;
-            }
-            if (isPawn) break;
-        }
+            
     }
     protected bool DirectionCheck(int direction)
     {
@@ -227,6 +171,11 @@ public class BasePiece : MonoBehaviour
     }
 
     #endregion
+
+    //virtual public void TestInheritance()
+    //{
+    //    Debug.Log("BasePiece");
+    //}
 
     public Faction GetFaction()
     {

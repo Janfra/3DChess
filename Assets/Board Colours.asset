@@ -15,4 +15,4 @@ MonoBehaviour:
   colourOne: {r: 0, g: 0, b: 0, a: 0}
   colourTwo: {r: 1, g: 1, b: 1, a: 0}
   colourHighlightOne: {r: 0.6698113, g: 0.15481488, b: 0.37578267, a: 0}
-  colourHighlightTwo: {r: 0.20859289, g: 0, b: 1, a: 0}
+  colourHighlightTwo: {r: 0.20859289, g: 0.369, b: 0.844, a: 0}

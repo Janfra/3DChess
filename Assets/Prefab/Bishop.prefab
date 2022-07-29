@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1897800633238498012
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 814303589378410842, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_Name
+      value: Bishop
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434813665257557759, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434813665257557759, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434813665257557759, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434813665257557759, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434813665257557759, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434813665257557759, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434813665257557759, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434813665257557759, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434813665257557759, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434813665257557759, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1434813665257557759, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827819719545874220, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: pieceInfo
+      value: 
+      objectReference: {fileID: 11400000, guid: 7bdef35395fefbe488eac97371fd77bf, type: 2}
+    - target: {fileID: 4827819719545874220, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+      propertyPath: pieceColour
+      value: 
+      objectReference: {fileID: 905962745761317698}
+    m_RemovedComponents:
+    - {fileID: 4827819719545874220, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+--- !u!1 &1232485817495643014 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 814303589378410842, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+  m_PrefabInstance: {fileID: 1897800633238498012}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &905962745761317698 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1640708636162812318, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
+  m_PrefabInstance: {fileID: 1897800633238498012}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2733731384851181561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232485817495643014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5939e339c2adf684592a26220b7aa815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pieceColour: {fileID: 905962745761317698}
+  pieceInfo: {fileID: 11400000, guid: 7bdef35395fefbe488eac97371fd77bf, type: 2}
+  OcuppiedTile: {fileID: 0}

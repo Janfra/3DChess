@@ -108,6 +108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d753bdb05d5526944a6f71f0042bd5cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceColour: {fileID: 0}
+  pieceColour: {fileID: 1640708636162812318}
   pieceInfo: {fileID: 11400000, guid: 8ad5a2054ab108642998beaf9ef9ab9f, type: 2}
   OcuppiedTile: {fileID: 0}

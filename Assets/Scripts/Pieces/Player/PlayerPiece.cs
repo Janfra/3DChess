@@ -9,17 +9,22 @@ public class PlayerPiece : BasePiece
         switch (pieceInfo.PieceName)
         {
             case Piece.Pawn:
-                SetInRange(2, false, true);
+                SetInRange();
                 break;
             case Piece.Knight:
+                SetInRange();
                 break;
             case Piece.Bishop:
+                SetInRange();
                 break;
             case Piece.Tower:
+                SetInRange();
                 break;
             case Piece.Queen:
+                SetInRange();
                 break;
             case Piece.King:
+                SetInRange();
                 break;
             default:
                 break;
@@ -39,7 +44,7 @@ public class PlayerPiece : BasePiece
             }
             else
             {
-                Debug.Log($"There is no tile in SetZTiles(), iteration number: {newPos}");
+                Debug.Log($"There is no tile in SetZTiles(), iteration number: {newPos} by piece: {gameObject.name}");
                 break;
             }
             if (isPieceBlocking) break;
@@ -59,7 +64,7 @@ public class PlayerPiece : BasePiece
             }
             else
             {
-                Debug.Log($"There is no tile in SetXTiles(), iteration number: {newPos}");
+                Debug.Log($"There is no tile in SetXTiles(), iteration number: {newPos} by piece: {gameObject.name}");
                 break;
             }
             if (isPieceBlocking) break;
@@ -79,12 +84,12 @@ public class PlayerPiece : BasePiece
             }
             else
             {
-                Debug.Log($"There is no tile in SetZTiles(), iteration number: {newPos}");
+                Debug.Log($"There is no tile in SetZTiles(), iteration number: {newPos} by piece: {gameObject.name}");
                 break;
             }
             if (isPieceBlocking) break;
         }
-    }
+        }
 
     protected override void SetRightHorizontalTiles(int gridMovement, bool isOffset)
     {
@@ -99,7 +104,7 @@ public class PlayerPiece : BasePiece
             }
             else
             {
-                Debug.Log($"There is no tile in SetZTiles(), iteration number: {newPos}");
+                Debug.Log($"There is no tile in SetZTiles(), iteration number: {newPos} by piece: {gameObject.name}");
                 break;
             }
             if (isPieceBlocking) break;

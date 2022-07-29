@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typePrefab: {fileID: 4827819719545874220, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
   PieceName: 0
+  faction: 0
