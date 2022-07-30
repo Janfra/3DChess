@@ -6,6 +6,7 @@ using UnityEngine;
 public class PawnPiece : PlayerPiece
 {
     [SerializeField] private int movement;
+    private bool isMoveUp => pieceInfo.faction == Faction.White;
 
 
     private void Awake()
@@ -30,7 +31,7 @@ public class PawnPiece : PlayerPiece
 
     protected override void SetInRange()
     {
-        SetZTiles(movement, false);
+        if (isMoveUp) SetZTiles(movement, false); else SetZTiles(movement, true);
     }
 
     //public override void TestInheritance()

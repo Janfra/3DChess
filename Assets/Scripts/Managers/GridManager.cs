@@ -24,6 +24,9 @@ public class GridManager : MonoBehaviour
         Instance = this;
         highlightedTiles = new List<Tile>();
     }
+
+    #region GridGen
+
     public void GenerateGrid()
     {
         tiles = new Dictionary<Vector3, Tile>();
@@ -34,27 +37,26 @@ public class GridManager : MonoBehaviour
             for(int z = 0; z < lenght; z++)
             {
                 Tile currentTile = GenerateTile(x, z);
-                if(z <= 1 && currentTile != null)
+                if(z <= 1 && currentTile)
                 {
                     tileNumber++;
-                    UnitManager.Instance.SpawnPieces(tileNumber, currentTile);
+                    Debug.Log($"After going up number: {tileNumber}, iteration X: {x}");
+                    UnitManager.Instance.SpawnPieces(tileNumber, currentTile, Faction.White);
+                }
+                else if (z == 6 && currentTile)
+                {
+                    UnitManager.Instance.SpawnPieces(tileNumber, currentTile, Faction.Black);
+                } 
+                else if(z == 7 && currentTile)
+                {
+                    UnitManager.Instance.SpawnPieces(tileNumber - 1, currentTile, Faction.Black);
                 }
             }
         }
 
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, 5, -10);
 
-        GameManager.Instance.UpdateGameState(GameState.PlayerTurn);
-    }
-    public Tile GetTileInfo()
-    {
-        return null;
-    }
-
-    private void SetTileColour(Tile tile, float xPos, float zPos)
-    {
-        var offset = (xPos + zPos) % 2 == 1;
-        tile.SetColor(offset);
+        GameManager.Instance.UpdateGameState(GameState.WhiteTurn);
     }
     private Tile GenerateTile(int x, int z)
     {
@@ -68,12 +70,21 @@ public class GridManager : MonoBehaviour
         tiles.Add(tilePosition, spawnedTile);
         return spawnedTile;
     }
+    private void SetTileColour(Tile tile, float xPos, float zPos)
+    {
+        var offset = (xPos + zPos) % 2 == 1;
+        tile.SetColor(offset);
+    }
+
+    #endregion
+
+    #region Tile Highlight & Setting
+
     public Tile GetTileAtPosition(Vector3 pos)
     {
         if (tiles.TryGetValue(pos, out var tile)) return tile;
         return null;
     }
-
     public void HighlightTile(Tile tile)
     {
         highlightedTiles.Add(tile);
@@ -88,6 +99,8 @@ public class GridManager : MonoBehaviour
         }
         highlightedTiles.Clear();
     }
+
+    #endregion
     public bool MoveTile(Tile tile)
     {
         if (highlightedTiles.Contains(tile)) return true;

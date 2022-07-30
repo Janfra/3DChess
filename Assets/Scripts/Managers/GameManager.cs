@@ -5,7 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameState State;
-    public bool playerTurn;
+    public Faction FactionTurn { get; private set; }
 
     public static event Action<GameState> OnGameStateChanged;
 
@@ -29,10 +29,11 @@ public class GameManager : MonoBehaviour
             case GameState.GenerateBoard:
                 GridManager.Instance.GenerateGrid();
                 break;
-            case GameState.PlayerTurn:
+            case GameState.WhiteTurn:
+                FactionTurn = Faction.White;
                 break;
-            case GameState.EnemyTurn:
-                OnEnemyTurn();
+            case GameState.BlackTurn:
+                FactionTurn = Faction.Black;
                 break;
             case GameState.Victory:
                 break;
@@ -44,10 +45,9 @@ public class GameManager : MonoBehaviour
 
         OnGameStateChanged?.Invoke(newState);
     }
-
-    private void OnEnemyTurn()
+    public GameState TurnUpdate()
     {
-        throw new NotImplementedException();
+        if (FactionTurn == Faction.White) return GameState.BlackTurn; else return GameState.WhiteTurn;
     }
 }
 
@@ -55,8 +55,8 @@ public enum GameState
 {
     Start,
     GenerateBoard,
-    PlayerTurn,
-    EnemyTurn,
+    WhiteTurn,
+    BlackTurn,
     Victory,
     Defeat,
     Pause,

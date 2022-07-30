@@ -21,6 +21,6 @@ public enum Piece
 
 public enum Faction
 {
-    Player,
-    Enemy,
+    White,
+    Black,
 }

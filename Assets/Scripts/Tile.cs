@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    #region Variables
+
     [SerializeField] private Renderer tileColour;
     [SerializeField] private SO_Colours colour;
     private Color defaultColour;
@@ -11,13 +13,14 @@ public class Tile : MonoBehaviour
     public bool isInRange;
     public BasePiece OccupiedPiece;
     private UnitManager unitManager;
+    public bool isWalkable => OccupiedPiece == null;
+
+    #endregion
 
     private void Awake()
     {
         unitManager = UnitManager.Instance;
     }
-
-    public bool isWalkable => OccupiedPiece == null;
 
     #region OnMouseEvents
 
@@ -31,7 +34,7 @@ public class Tile : MonoBehaviour
     }
     private void OnMouseExit()
     {
-        HighlightUnhovered();
+        StopHighlightUnhover();
         if (OccupiedPiece)
         {
             OccupiedPiece.PieceUnhovered();
@@ -39,22 +42,19 @@ public class Tile : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if (GameManager.Instance.State != GameState.PlayerTurn) return;
+        if (GameManager.Instance.State != GameState.WhiteTurn && GameManager.Instance.State != GameState.BlackTurn) return;
 
         if (OccupiedPiece)
         {
-            if (OccupiedPiece.GetFaction() == Faction.Player)
+            if (OccupiedPiece.GetFaction() == GameManager.Instance.FactionTurn)
             {
-                if (unitManager.SelectedPiece != null) GridManager.Instance.UnhighlightMoveTiles();
-                unitManager.SetSelectedPiece((PlayerPiece)OccupiedPiece);
-                unitManager.SelectedPiece.PieceMoveHighlight();
+                SelectPiece();
             }
             else
             {
                 if (unitManager.SelectedPiece != null)
                 {
-                    unitManager.SetSelectedPiece(null);
-                    GridManager.Instance.UnhighlightMoveTiles();
+                    EatEnemyPiece();
                 }
             }
         }
@@ -64,10 +64,7 @@ public class Tile : MonoBehaviour
             {
                 if (isWalkable && isInRange)
                 {
-                    SetPiece(unitManager.SelectedPiece);
-                    unitManager.CheckFirstMove();
-                    unitManager.SetSelectedPiece(null);
-                    GridManager.Instance.UnhighlightMoveTiles();
+                    PieceMove();
                 }
             }
         }
@@ -77,30 +74,36 @@ public class Tile : MonoBehaviour
 
     #region Highlight & Colour
 
+    private void ChangeColour(Color newColour)
+    {
+        tileColour.material.color = newColour;
+    }
     public void SetColor(bool offSet)
     {
         defaultColour = offSet ? colour.colourOne : colour.colourTwo;
         highlightColour = offSet ? colour.colourHighlightOne : colour.colourHighlightTwo;
         ChangeColour(defaultColour);
     }
-    private void ChangeColour(Color newColour)
-    {
-        tileColour.material.color = newColour;
-    }
     public void Highlight()
     {
         ChangeColour(highlightColour);
-    }
-    public void HighlightUnhovered()
-    {
-        if (!GridManager.Instance.MoveTile(this)) ChangeColour(defaultColour);
     }
     public void StopHighlight()
     {
         ChangeColour(defaultColour);
     }
+    public void StopHighlightUnhover()
+    {
+        if (!GridManager.Instance.MoveTile(this)) ChangeColour(defaultColour);
+    }
+    private void UnhighlitghtMoveTile()
+    {
+        GridManager.Instance.UnhighlightMoveTiles();
+    }
 
     #endregion
+
+    #region Piece Movement
 
     public void SetPiece(BasePiece piece)
     {
@@ -112,4 +115,40 @@ public class Tile : MonoBehaviour
         OccupiedPiece = piece;
         piece.OcuppiedTile = this;
     }
+    private void SetSelectedPiece(PlayerPiece playerPiece)
+    {
+        unitManager.SetSelectedPiece(playerPiece);
+    }
+    private void PieceReplace(BasePiece newPiece)
+    {
+        OccupiedPiece.enabled = false;
+        SetPiece(newPiece);
+    }
+    private void NextTurn()
+    {
+        GameManager.Instance.UpdateGameState(GameManager.Instance.TurnUpdate());
+    }
+    private void PieceMove()
+    {
+        SetPiece(unitManager.SelectedPiece);
+        unitManager.CheckFirstMove();
+        SetSelectedPiece(null);
+        UnhighlitghtMoveTile();
+        NextTurn();
+    }
+    private void EatEnemyPiece()
+    {
+        PieceReplace(unitManager.SelectedPiece);
+        SetSelectedPiece(null);
+        UnhighlitghtMoveTile();
+        NextTurn();
+    }
+    private void SelectPiece()
+    {
+        if (unitManager.SelectedPiece != null) UnhighlitghtMoveTile();
+        SetSelectedPiece((PlayerPiece)OccupiedPiece);
+        unitManager.SelectedPiece.PieceMoveHighlight();
+    }
+
+    #endregion
 }

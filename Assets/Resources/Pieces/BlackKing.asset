@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffd13981f85df2f44aa664b3a27a85ec, type: 3}
-  m_Name: King
+  m_Name: BlackKing
   m_EditorClassIdentifier: 
-  typePrefab: {fileID: 7489622645815258343, guid: 468f91b17abad7b4e9b294323e612379, type: 3}
+  typePrefab: {fileID: 2392243193908662291, guid: 8a2422f815253eb4c9032dc9dc6851cc, type: 3}
   PieceName: 5
-  faction: 0
+  faction: 1

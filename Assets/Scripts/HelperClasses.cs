@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class HelperClasses
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
 
-public class PieceLoopHelper<T> where T : BasePiece
+public class DebugHelper
 {
+    public static void NullWarn(string nullObj, string funcName)
+    {
+        Debug.LogWarning($"{nullObj} in {funcName} is null!");
+    }
 
+    public static void loopNullWarn(string nullObj, string funcName, int iteration, string objName)
+    {
+        Debug.LogWarning($"There is no {nullObj} in {funcName}. Iteration number: {iteration} Object name: {objName}");
+    }
 }

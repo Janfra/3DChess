@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffd13981f85df2f44aa664b3a27a85ec, type: 3}
-  m_Name: Bishop
+  m_Name: WhiteBishop
   m_EditorClassIdentifier: 
   typePrefab: {fileID: 2733731384851181561, guid: cff11ef7ab49553489ad6cb53c5ed847, type: 3}
   PieceName: 2

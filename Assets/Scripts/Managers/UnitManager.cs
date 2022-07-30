@@ -24,7 +24,7 @@ public class UnitManager : MonoBehaviour
         pieces = Resources.LoadAll<ScriptablePiece>("Pieces").ToList();
     }
 
-    public void SpawnPieces(int currentTile, Tile tile)
+    public void SpawnPieces(int currentTile, Tile tile, Faction faction)
     {
         BasePiece piecePrefab;
         switch (currentTile)
@@ -37,7 +37,7 @@ public class UnitManager : MonoBehaviour
             case 12:
             case 14:
             case 16:
-                piecePrefab = GetPawn();
+                piecePrefab = GetPawn(faction);
                 if (piecePrefab)
                 {
                     piecePrefab = Instantiate(piecePrefab);
@@ -45,12 +45,12 @@ public class UnitManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("Pawn in SpawnPieces() is null!");
+                    DebugHelper.NullWarn("Pawn", "SpawnPieces()");
                 }
                 break;
             case 5:
             case 11:
-                piecePrefab = GetKnight();
+                piecePrefab = GetKnight(faction);
                 if (piecePrefab)
                 {
                     piecePrefab = Instantiate(piecePrefab);
@@ -58,12 +58,12 @@ public class UnitManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("Knight in SpawnPieces() is null!");
+                    DebugHelper.NullWarn("Knight", "SpawnPieces()");
                 }
                 break;
             case 3:
             case 13:
-                piecePrefab = GetBishop();
+                piecePrefab = GetBishop(faction);
                 if (piecePrefab)
                 {
                     piecePrefab = Instantiate(piecePrefab);
@@ -71,12 +71,12 @@ public class UnitManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("Bishop in SpawnPieces() is null!");
+                    DebugHelper.NullWarn("Bishop", "SpawnPieces()");
                 }
                 break;
             case 1:
             case 15:
-                piecePrefab = GetTower();
+                piecePrefab = GetTower(faction);
                 if (piecePrefab)
                 {
                     piecePrefab = Instantiate(piecePrefab);
@@ -84,11 +84,11 @@ public class UnitManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("Tower in SpawnPieces() is null!");
+                    DebugHelper.NullWarn("Tower", "SpawnPieces()");
                 }
                 break;
             case 9:
-                piecePrefab = GetQueen();
+                piecePrefab = GetQueen(faction);
                 if (piecePrefab)
                 {
                     piecePrefab = Instantiate(piecePrefab);
@@ -96,11 +96,11 @@ public class UnitManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("Queen in SpawnPieces() is null!");
+                    DebugHelper.NullWarn("Queen", "SpawnPieces()");
                 }
                 break;
             case 7:
-                piecePrefab = GetKing();
+                piecePrefab = GetKing(faction);
                 if (piecePrefab)
                 {
                     piecePrefab = Instantiate(piecePrefab);
@@ -108,7 +108,7 @@ public class UnitManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("King in SpawnPieces() is null!");
+                    DebugHelper.NullWarn("King", "SpawnPieces()");
                 }
                 break;
             default:
@@ -116,36 +116,63 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-    private BasePiece GetPawn() 
+    private BasePiece GetPawn(Faction faction) 
     {
-        foreach (var piece in pieces)
+        if(faction == Faction.White)
         {
-            if(piece.PieceName == Piece.Pawn)
+            foreach (var piece in pieces)
             {
-                return piece.typePrefab;
+                if(piece.PieceName == Piece.Pawn && piece.faction == faction)
+                {
+                    return piece.typePrefab;
+                }
+            }
+        } 
+        else
+        {
+            foreach (var piece in pieces)
+            {
+                if(piece.PieceName == Piece.Pawn && piece.faction == faction)
+                {
+                    return piece.typePrefab;
+                }
             }
         }
         return null;
     }
-    private BasePiece GetKnight()
+    private BasePiece GetKnight(Faction faction)
     {
-        return pieces.Where(piece => piece.PieceName == Piece.Knight).First().typePrefab;
+        if (faction == Faction.White) return pieces.Where(piece => piece.PieceName == Piece.Knight && piece.faction == faction).First().typePrefab;
+        else return pieces.Where(piece => piece.PieceName == Piece.Knight && piece.faction == faction).First().typePrefab;
     }
-    private BasePiece GetBishop()
+    private BasePiece GetBishop(Faction faction)
     {
-        return pieces.Where(piece => piece.PieceName == Piece.Bishop).First().typePrefab;
+        BasePiece rv;
+        if (faction == Faction.White) rv = pieces.Where(piece => piece.PieceName == Piece.Bishop && piece.faction == Faction.White).First().typePrefab;
+        else rv = pieces.Where(piece => piece.PieceName == Piece.Bishop && piece.faction == faction).First().typePrefab;
+        if (rv)
+        {
+            return rv;
+        }
+        else
+        {
+            return null;
+        }
     }
-    private BasePiece GetTower()
+    private BasePiece GetTower(Faction faction)
     {
-        return pieces.Where(piece => piece.PieceName == Piece.Tower).First().typePrefab;
+        if (faction == Faction.White) return pieces.Where(piece => piece.PieceName == Piece.Tower && piece.faction == faction).First().typePrefab;
+        else return pieces.Where(piece => piece.PieceName == Piece.Tower && piece.faction == faction).First().typePrefab;
     }
-    private BasePiece GetQueen()
+    private BasePiece GetQueen(Faction faction)
     {
-        return pieces.Where(piece => piece.PieceName == Piece.Queen).First().typePrefab;
+        if (faction == Faction.White) return pieces.Where(piece => piece.PieceName == Piece.Queen && piece.faction == faction).First().typePrefab;
+        else return pieces.Where(piece => piece.PieceName == Piece.Queen && piece.faction == faction).First().typePrefab;
     }
-    private BasePiece GetKing()
+    private BasePiece GetKing(Faction faction)
     {
-        return pieces.Where(piece => piece.PieceName == Piece.King).First().typePrefab;
+        if (faction == Faction.White) return pieces.Where(piece => piece.PieceName == Piece.King && piece.faction == faction).First().typePrefab;
+        else return pieces.Where(piece => piece.PieceName == Piece.King && piece.faction == faction).First().typePrefab;
     }
 
     public void SetSelectedPiece(PlayerPiece piece)

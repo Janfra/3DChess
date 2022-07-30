@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ffd13981f85df2f44aa664b3a27a85ec, type: 3}
-  m_Name: Pawn
+  m_Name: WhiteTower
   m_EditorClassIdentifier: 
-  typePrefab: {fileID: 4827819719545874220, guid: d942cc0226b7c954b99c5d923bc6491f, type: 3}
-  PieceName: 0
+  typePrefab: {fileID: -3505089629789600684, guid: 422c74588a7e1084b9b7fb68f0345bee, type: 3}
+  PieceName: 3
   faction: 0

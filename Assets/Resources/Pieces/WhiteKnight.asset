@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffd13981f85df2f44aa664b3a27a85ec, type: 3}
+  m_Name: WhiteKnight
+  m_EditorClassIdentifier: 
+  typePrefab: {fileID: 5552285985303926220, guid: 8355a34a613bfa043915dd072658097c, type: 3}
+  PieceName: 1
+  faction: 0
