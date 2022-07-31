@@ -27,7 +27,14 @@ public class GameManager : MonoBehaviour
             case GameState.Start:
                 break;
             case GameState.GenerateBoard:
-                GridManager.Instance.GenerateGrid();
+                if (!GridManager.Instance.AreTilesGenerated())
+                {
+                    GridManager.Instance.GenerateGrid();
+                } 
+                else
+                {
+                    GridManager.Instance.ResetGrid();
+                }
                 break;
             case GameState.WhiteTurn:
                 FactionTurn = Faction.White;
@@ -37,14 +44,13 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Victory:
                 break;
-            case GameState.Defeat:
-                break;
             case GameState.Pause:
                 break;
         }
 
         OnGameStateChanged?.Invoke(newState);
     }
+
     public GameState TurnUpdate()
     {
         if (FactionTurn == Faction.White) return GameState.BlackTurn; else return GameState.WhiteTurn;
@@ -58,6 +64,5 @@ public enum GameState
     WhiteTurn,
     BlackTurn,
     Victory,
-    Defeat,
     Pause,
 }

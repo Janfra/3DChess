@@ -18,6 +18,11 @@ public class KingPiece : PlayerPiece
         UnitManager.FirstMove -= OnFirstMove;
     }
 
+    private void OnDisable()
+    {
+        GameManager.Instance.UpdateGameState(GameState.Victory);
+    }
+
     private void OnFirstMove()
     {
         if (UnitManager.Instance.SelectedPiece == this)

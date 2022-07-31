@@ -21,7 +21,15 @@ public class GridManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            Debug.Log("Tried to duplicate singleton!");
+        }
         highlightedTiles = new List<Tile>();
     }
 
@@ -76,6 +84,35 @@ public class GridManager : MonoBehaviour
         tile.SetColor(offset);
     }
 
+    public void ResetGrid()
+    {
+        UnitManager.Instance.ClearPieces();
+        int tileNumber = 0;
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < lenght; z++)
+            {
+                Tile currentTile = GetTileAtPosition(new Vector3(x, yPos, z - zOffset));
+                if (z <= 1 && currentTile)
+                {
+                    tileNumber++;
+                    Debug.Log($"After going up number: {tileNumber}, iteration X: {x}");
+                    UnitManager.Instance.SpawnPieces(tileNumber, currentTile, Faction.White);
+                }
+                else if (z == 6 && currentTile)
+                {
+                    UnitManager.Instance.SpawnPieces(tileNumber, currentTile, Faction.Black);
+                }
+                else if (z == 7 && currentTile)
+                {
+                    UnitManager.Instance.SpawnPieces(tileNumber - 1, currentTile, Faction.Black);
+                }
+            }
+        }
+        GameManager.Instance.UpdateGameState(GameState.WhiteTurn);
+    }
+
     #endregion
 
     #region Tile Highlight & Setting
@@ -105,5 +142,17 @@ public class GridManager : MonoBehaviour
     {
         if (highlightedTiles.Contains(tile)) return true;
         return false;
+    }
+
+    public bool AreTilesGenerated()
+    {
+        if(tiles != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

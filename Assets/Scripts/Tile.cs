@@ -52,7 +52,7 @@ public class Tile : MonoBehaviour
             }
             else
             {
-                if (unitManager.SelectedPiece != null)
+                if (unitManager.SelectedPiece != null && isInRange)
                 {
                     EatEnemyPiece();
                 }
@@ -121,12 +121,12 @@ public class Tile : MonoBehaviour
     }
     private void PieceReplace(BasePiece newPiece)
     {
-        OccupiedPiece.enabled = false;
+        OccupiedPiece.gameObject.SetActive(false);
         SetPiece(newPiece);
     }
     private void NextTurn()
     {
-        GameManager.Instance.UpdateGameState(GameManager.Instance.TurnUpdate());
+        if(GameManager.Instance.State == GameState.BlackTurn || GameManager.Instance.State == GameState.WhiteTurn) GameManager.Instance.UpdateGameState(GameManager.Instance.TurnUpdate());
     }
     private void PieceMove()
     {
