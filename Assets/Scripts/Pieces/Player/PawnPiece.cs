@@ -6,6 +6,7 @@ using UnityEngine;
 public class PawnPiece : PlayerPiece
 {
     [SerializeField] private int movement;
+    // Sets the direction the pawn will be moving.
     private bool isMoveUp => pieceInfo.faction == Faction.White;
 
 
@@ -110,7 +111,7 @@ public class PawnPiece : PlayerPiece
             }
             else
             {
-                Debug.Log($"There is no tile in SetXLeftKnightTile(), piece: {gameObject.name}");
+                Debug.Log($"There is no tile in SetZDiagonalTopTile(), piece: {gameObject.name}");
             }
             isOffset = true;
         }
@@ -133,7 +134,7 @@ public class PawnPiece : PlayerPiece
             }
             else
             {
-                Debug.Log($"There is no tile in SetXLeftKnightTile(), piece: {gameObject.name}");
+                Debug.Log($"There is no tile in SetZDiagonalBotTile(), piece: {gameObject.name}");
             }
             isOffset = true;
         }
@@ -166,6 +167,13 @@ public class PawnPiece : PlayerPiece
     {
         if (tile.OccupiedPiece != null && tile.OccupiedPiece.GetFaction() != pieceInfo.faction) return true; else return false;
     }
+
+    public void PawnUpgrade(BasePiece newType, Piece newName)
+    {
+        pieceInfo.typePrefab = newType;
+        pieceInfo.PieceName = newName;
+    }
+
 
     //public override void TestInheritance()
     //{

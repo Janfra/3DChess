@@ -18,7 +18,7 @@ public class GridManager : MonoBehaviour
     private const float zOffset = 3.5f;
     public const int TileDistance = 1;
 
-
+    // Singleton and initialize
     private void Awake()
     {
         if(Instance == null)
@@ -35,6 +35,7 @@ public class GridManager : MonoBehaviour
 
     #region GridGen
 
+    // Creates the board and pieces, then center the camera and update state.
     public void GenerateGrid()
     {
         tiles = new Dictionary<Vector3, Tile>();
@@ -66,6 +67,8 @@ public class GridManager : MonoBehaviour
 
         GameManager.Instance.UpdateGameState(GameState.WhiteTurn);
     }
+
+    // Create the tile using the position given with the parameters, set it, return the tile.
     private Tile GenerateTile(int x, int z)
     {
         Vector3 tilePosition = new Vector3(x, yPos, z - zOffset);
@@ -78,12 +81,15 @@ public class GridManager : MonoBehaviour
         tiles.Add(tilePosition, spawnedTile);
         return spawnedTile;
     }
+
+    // Give it a tile, depending on its position, give it a colour. 
     private void SetTileColour(Tile tile, float xPos, float zPos)
     {
         var offset = (xPos + zPos) % 2 == 1;
         tile.SetColor(offset);
     }
 
+    // Resets the board without generating the tiles again.
     public void ResetGrid()
     {
         UnitManager.Instance.ClearPieces();
@@ -117,16 +123,21 @@ public class GridManager : MonoBehaviour
 
     #region Tile Highlight & Setting
 
+    // Using the given position return the tile from the dictonary
     public Tile GetTileAtPosition(Vector3 pos)
     {
         if (tiles.TryGetValue(pos, out var tile)) return tile;
         return null;
     }
+
+    // Highlight given tile and add it to the highlited list
     public void HighlightTile(Tile tile)
     {
         highlightedTiles.Add(tile);
         tile.Highlight();
     }
+
+    // Stop highliting all tiles in the highlight list, reset list
     public void UnhighlightMoveTiles()
     {
         foreach (var tile in highlightedTiles)
@@ -138,13 +149,16 @@ public class GridManager : MonoBehaviour
     }
 
     #endregion
-    public bool MoveTile(Tile tile)
+
+    // Check if the tile given is inside the highlight list, used to not stop highlighting tiles once unhovered
+    public bool MoveTileCheck(Tile tile)
     {
         if (highlightedTiles.Contains(tile)) return true;
         return false;
     }
 
-    public bool AreTilesGenerated()
+    // Check if the list containing the tiles has been created, if not, generate the board
+    public bool BoardGenCheck()
     {
         if(tiles != null)
         {

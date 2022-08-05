@@ -80,6 +80,7 @@ public class KnightPiece : PlayerPiece
             Debug.Log($"There is no tile in SetXLeftKnightTile(), piece: {gameObject.name}");
         }
     }
+
     private Tile GetXLeftKnightTile(bool isOffset)
     {
         if (isOffset)

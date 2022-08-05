@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class AIPiece : BasePiece
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void SetInRange()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        throw new System.NotImplementedException();
     }
 }

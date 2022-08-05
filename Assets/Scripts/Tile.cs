@@ -94,7 +94,7 @@ public class Tile : MonoBehaviour
     }
     public void StopHighlightUnhover()
     {
-        if (!GridManager.Instance.MoveTile(this)) ChangeColour(defaultColour);
+        if (!GridManager.Instance.MoveTileCheck(this)) ChangeColour(defaultColour);
     }
     private void UnhighlitghtMoveTile()
     {
@@ -122,25 +122,24 @@ public class Tile : MonoBehaviour
     private void PieceReplace(BasePiece newPiece)
     {
         OccupiedPiece.gameObject.SetActive(false);
+        KingCheck();
         SetPiece(newPiece);
     }
     private void NextTurn()
     {
+        SetSelectedPiece(null);
+        UnhighlitghtMoveTile();
         if(GameManager.Instance.State == GameState.BlackTurn || GameManager.Instance.State == GameState.WhiteTurn) GameManager.Instance.UpdateGameState(GameManager.Instance.TurnUpdate());
     }
     private void PieceMove()
     {
         SetPiece(unitManager.SelectedPiece);
         unitManager.CheckFirstMove();
-        SetSelectedPiece(null);
-        UnhighlitghtMoveTile();
         NextTurn();
     }
     private void EatEnemyPiece()
     {
         PieceReplace(unitManager.SelectedPiece);
-        SetSelectedPiece(null);
-        UnhighlitghtMoveTile();
         NextTurn();
     }
     private void SelectPiece()
@@ -148,6 +147,16 @@ public class Tile : MonoBehaviour
         if (unitManager.SelectedPiece != null) UnhighlitghtMoveTile();
         SetSelectedPiece((PlayerPiece)OccupiedPiece);
         unitManager.SelectedPiece.PieceMoveHighlight();
+    }
+    private void KingCheck()
+    {
+        Debug.Log($"Piece name: {OccupiedPiece.GetPieceName()} needs to be {Piece.King.ToString()}");
+        if (OccupiedPiece.GetPieceName() == Piece.King.ToString())
+        {
+            Debug.Log("King Eaten");
+            KingPiece kingPiece = (KingPiece)OccupiedPiece;
+            kingPiece.KingEaten();
+        }
     }
 
     #endregion

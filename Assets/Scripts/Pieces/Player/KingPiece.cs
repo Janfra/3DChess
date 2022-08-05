@@ -18,7 +18,7 @@ public class KingPiece : PlayerPiece
         UnitManager.FirstMove -= OnFirstMove;
     }
 
-    private void OnDisable()
+    public void KingEaten()
     {
         GameManager.Instance.UpdateGameState(GameState.Victory);
     }

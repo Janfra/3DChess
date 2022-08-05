@@ -5,9 +5,7 @@ using UnityEngine;
 public class UnitManager : MonoBehaviour
 {
     public static event OnBeforeFirstMove FirstMove;
-    public static event OnAfterFirstMove NormalMove;
     public delegate void OnBeforeFirstMove();
-    public delegate void OnAfterFirstMove();
     
     public static UnitManager Instance;
     private List<ScriptablePiece> pieceSO;
@@ -26,8 +24,10 @@ public class UnitManager : MonoBehaviour
         pieceList = new List<GameObject>();
     }
 
+    // Given the tile number and faction, the function will spawn the required piece at the given tile.
     public void SpawnPieces(int currentTile, Tile tile, Faction faction)
     {
+        // Unit information
         BasePiece piecePrefab;
         switch (currentTile)
         {
@@ -112,6 +112,7 @@ public class UnitManager : MonoBehaviour
         }
     }
 
+    // Return the piece information and give the parameter to define the side (faction).
     private BasePiece GetPawn(Faction faction) 
     {
         if(faction == Faction.White)
@@ -170,9 +171,12 @@ public class UnitManager : MonoBehaviour
         if (faction == Faction.White) return pieceSO.Where(piece => piece.PieceName == Piece.King && piece.faction == faction).First().typePrefab;
         else return pieceSO.Where(piece => piece.PieceName == Piece.King && piece.faction == faction).First().typePrefab;
     }
+
+    // Spawns piece with the given information at the given tile and adds it to the 'pieceList' for clearing.
     private void GeneratePiece(BasePiece piecePrefab, Tile tile)
     {
         piecePrefab = Instantiate(piecePrefab);
+        piecePrefab.name = piecePrefab.GetPieceName();
         tile.SetPiece(piecePrefab);
         pieceList.Add(piecePrefab.gameObject);
     }
@@ -187,11 +191,13 @@ public class UnitManager : MonoBehaviour
         pieceList.Clear();
     }
 
+    // Sets the clicked piece as the selected piece
     public void SetSelectedPiece(PlayerPiece piece)
     {
         SelectedPiece = piece;
     }
 
+    // Check if its the first move of the selected piece and if there are any left
     public void CheckFirstMove()
     {
         UnitManager.FirstMove?.Invoke();

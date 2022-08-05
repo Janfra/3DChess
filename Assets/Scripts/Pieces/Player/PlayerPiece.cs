@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerPiece : BasePiece
+public abstract class PlayerPiece : BasePiece
 {
     public void PieceMoveHighlight()
     {
         SetInRange();
     }
+
+    // Override BasePiece 'SetTiles' functions to add highlighting the tiles for player feedback.
 
     protected override void SetZTiles(int gridMovement, bool isOffset)
     {

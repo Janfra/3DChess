@@ -25,20 +25,46 @@ public class MenuManager : MonoBehaviour
         GameManager.OnGameStateChanged -= OnGameVictory;
     }
 
+    // Start Game
+    private void OnGameStart(GameState state)
     {
         startScreen.SetActive(state == GameState.Start);
+        GameManager.OnGameStateChanged += OnGameVictory;
     }
-    
+
+    // Activate Victory screen, change it depending on winner
+    private void OnGameVictory(GameState state)
+    {
+        victoryScreen.SetActive(state == GameState.Victory);
+        if(GameManager.Instance.FactionTurn == Faction.Black)
+        {
+            BlackSideVictory();
+        } 
+        else
+        {
+            WhiteSideVictory();
+        }
+    }
+
+    // Black win
+    private void BlackSideVictory()
+    {
+        victoryText.text = "BLACK VICTORY";
+    }
+
+    // White win
     private void WhiteSideVictory()
     {
         victoryText.text = "WHITE VICTORY";
     }
 
+    // Button reference to update state
     public void StartGame()
     {
         GameManager.Instance.UpdateGameState(GameState.GenerateBoard);
     }
 
+    // Button reference to update state
     public void Rematch()
     {
         GameManager.Instance.UpdateGameState(GameState.GenerateBoard);
