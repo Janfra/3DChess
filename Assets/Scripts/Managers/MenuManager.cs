@@ -32,7 +32,7 @@ public class MenuManager : MonoBehaviour
         GameManager.OnGameStateChanged += OnGameVictory;
     }
 
-    // Activate Victory screen, change it depending on winner
+    // Activate Victory screen
     private void OnGameVictory(GameState state)
     {
         victoryScreen.SetActive(state == GameState.Victory);

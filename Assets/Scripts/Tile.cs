@@ -8,8 +8,7 @@ public class Tile : MonoBehaviour
 
     [SerializeField] private Renderer tileColour;
     [SerializeField] private SO_Colours colour;
-    private Color defaultColour;
-    private Color highlightColour;
+    private Color defaultColour, highlightColour;
     public bool isInRange;
     public BasePiece OccupiedPiece;
     private UnitManager unitManager;
@@ -24,6 +23,7 @@ public class Tile : MonoBehaviour
 
     #region OnMouseEvents
 
+    // Highlight tile and make piece transparent on hover
     private void OnMouseEnter()
     {
         Highlight();
@@ -32,20 +32,25 @@ public class Tile : MonoBehaviour
             OccupiedPiece.PieceHovered();
         }
     }
+
+    // Stop hovered highlight and set piece back to normal colour.
     private void OnMouseExit()
     {
-        StopHighlightUnhover();
+        TileUnhover();
         if (OccupiedPiece)
         {
             OccupiedPiece.PieceUnhovered();
         }
     }
+
+    // Clicking logic, enables selecting a piece, eating enemy pieces and movement.
     private void OnMouseDown()
     {
         if (GameManager.Instance.State != GameState.WhiteTurn && GameManager.Instance.State != GameState.BlackTurn) return;
 
         if (OccupiedPiece)
         {
+            // If it is the piece faction turn select it, otherwise eat enemy piece with the selected piece (if possible).
             if (OccupiedPiece.GetFaction() == GameManager.Instance.FactionTurn)
             {
                 SelectPiece();
@@ -59,9 +64,10 @@ public class Tile : MonoBehaviour
             }
         }
         else
-        {
+        {   
             if (unitManager.SelectedPiece != null)
             {
+                // Check if the clicked tile is not taken and within movement range, then move selected piece.
                 if (isWalkable && isInRange)
                 {
                     PieceMove();
@@ -74,28 +80,39 @@ public class Tile : MonoBehaviour
 
     #region Highlight & Colour
 
+    // Changes the tile colour to given colour.
     private void ChangeColour(Color newColour)
     {
         tileColour.material.color = newColour;
     }
+
+    // With the parameter given, it sets the tile's colours. 
     public void SetColor(bool offSet)
     {
-        defaultColour = offSet ? colour.colourOne : colour.colourTwo;
-        highlightColour = offSet ? colour.colourHighlightOne : colour.colourHighlightTwo;
+        defaultColour = offSet ? colour.colourTwo : colour.colourOne;
+        highlightColour = offSet ? colour.colourHighlightTwo : colour.colourHighlightOne;
         ChangeColour(defaultColour);
     }
+
+    // Start highlighting tile.
     public void Highlight()
     {
         ChangeColour(highlightColour);
     }
+
+    // Stop highlighting tile.
     public void StopHighlight()
     {
         ChangeColour(defaultColour);
     }
-    public void StopHighlightUnhover()
+
+    // Stop hovered highlight. NOTE: This one is specifically to stop highlighting only tiles highlighted by the hover effect, won't affect move highlight.
+    public void TileUnhover()
     {
         if (!GridManager.Instance.MoveTileCheck(this)) ChangeColour(defaultColour);
     }
+
+    // Stop highlight of movement all tiles.
     private void UnhighlitghtMoveTile()
     {
         GridManager.Instance.UnhighlightMoveTiles();
@@ -103,15 +120,24 @@ public class Tile : MonoBehaviour
 
     #endregion
 
-    #region Piece Movement
+    #region Piece Handling
 
+    public void InitializePiece(BasePiece piece)
+    {
+        Vector3 newPos = new Vector3(transform.position.x, transform.position.y + UnitManager.pieceYOffset, transform.position.z - UnitManager.pieceZOffset);
+        piece.transform.position = newPos;
+        piece.MovePieceTo(newPos);
+        OccupiedPiece = piece;
+        piece.OcuppiedTile = this;
+        Debug.Log($"Piece name: {piece.name}, piece current position: {piece.transform.position}, piece target new position: {newPos}");
+    }
     public void SetPiece(BasePiece piece)
     {
-        if(piece.OcuppiedTile != null)
+        if (piece.OcuppiedTile != null)
         {
             piece.OcuppiedTile.OccupiedPiece = null;
         }
-        piece.transform.position = new Vector3(transform.position.x, transform.position.y + UnitManager.pieceYOffset, transform.position.z - UnitManager.pieceZOffset);
+        piece.MovePieceTo(new Vector3(transform.position.x, transform.position.y + UnitManager.pieceYOffset, transform.position.z - UnitManager.pieceZOffset));
         OccupiedPiece = piece;
         piece.OcuppiedTile = this;
     }
@@ -121,42 +147,25 @@ public class Tile : MonoBehaviour
     }
     private void PieceReplace(BasePiece newPiece)
     {
-        OccupiedPiece.gameObject.SetActive(false);
-        KingCheck();
+        OccupiedPiece.PieceEaten();
         SetPiece(newPiece);
-    }
-    private void NextTurn()
-    {
-        SetSelectedPiece(null);
-        UnhighlitghtMoveTile();
-        if(GameManager.Instance.State == GameState.BlackTurn || GameManager.Instance.State == GameState.WhiteTurn) GameManager.Instance.UpdateGameState(GameManager.Instance.TurnUpdate());
     }
     private void PieceMove()
     {
         SetPiece(unitManager.SelectedPiece);
         unitManager.CheckFirstMove();
-        NextTurn();
+        GameManager.Instance.NextTurn();
     }
     private void EatEnemyPiece()
     {
         PieceReplace(unitManager.SelectedPiece);
-        NextTurn();
+        GameManager.Instance.NextTurn();
     }
     private void SelectPiece()
     {
         if (unitManager.SelectedPiece != null) UnhighlitghtMoveTile();
         SetSelectedPiece((PlayerPiece)OccupiedPiece);
         unitManager.SelectedPiece.PieceMoveHighlight();
-    }
-    private void KingCheck()
-    {
-        Debug.Log($"Piece name: {OccupiedPiece.GetPieceName()} needs to be {Piece.King.ToString()}");
-        if (OccupiedPiece.GetPieceName() == Piece.King.ToString())
-        {
-            Debug.Log("King Eaten");
-            KingPiece kingPiece = (KingPiece)OccupiedPiece;
-            kingPiece.KingEaten();
-        }
     }
 
     #endregion

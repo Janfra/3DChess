@@ -43,4 +43,10 @@ public class KingPiece : PlayerPiece
             SetZTiles(Movement, isOffset);
         }
     }
+
+    public override void PieceEaten()
+    {
+        base.PieceEaten();
+        KingEaten();
+    }
 }

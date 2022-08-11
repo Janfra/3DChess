@@ -67,6 +67,17 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2216182760912036617, guid: c64bb200e26c6f1499967fd87a0ab87d, type: 3}
   m_PrefabInstance: {fileID: 1971521135878035850}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5799881700014702171 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5413627650520737745, guid: c64bb200e26c6f1499967fd87a0ab87d, type: 3}
+  m_PrefabInstance: {fileID: 1971521135878035850}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6786463772873519818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02ffa1f514a362245b0e308c5d1b7ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &-8975572568125869316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,5 +92,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pieceColour: {fileID: 404539454828509827}
   pieceInfo: {fileID: 11400000, guid: 2aa65790ba07d76479c9166a71211e48, type: 2}
+  unitMovement: {fileID: 5799881700014702171}
   OcuppiedTile: {fileID: 0}
   movement: 0

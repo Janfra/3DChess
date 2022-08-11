@@ -6,7 +6,9 @@ public abstract class BasePiece : MonoBehaviour
 {
     [SerializeField] private Renderer pieceColour;
     [SerializeField] protected ScriptablePiece pieceInfo;
+    [SerializeField] private ObjectLerper unitMovement;
     public Tile OcuppiedTile;
+
 
     private void Awake()
     {
@@ -15,6 +17,10 @@ public abstract class BasePiece : MonoBehaviour
             pieceColour = GetComponent<Renderer>();
         }
         Debug.Assert(pieceInfo != null, $"{gameObject.name} has no piece info!");
+        if(unitMovement == null)
+        {
+            unitMovement = GetComponent<ObjectLerper>();
+        }
     }
 
     #region Highlight
@@ -40,6 +46,12 @@ public abstract class BasePiece : MonoBehaviour
     #region Movement
 
     // NOTE: 'gridMovement' is actually just used by 2 pieces, should probably change it to be specific to them...
+    
+    // Starts movement animation
+    public void MovePieceTo(Vector3 targetPosition)
+    {
+        unitMovement.SetMovePosition(targetPosition);
+    }
 
     // Depending on the current piece, sets the tiles as walkable. 
     abstract protected void SetInRange();
@@ -237,5 +249,10 @@ public abstract class BasePiece : MonoBehaviour
     public string GetPieceName()
     {
        return pieceInfo.PieceName.ToString();
+    }
+
+    virtual public void PieceEaten()
+    {
+        gameObject.SetActive(false);
     }
 }

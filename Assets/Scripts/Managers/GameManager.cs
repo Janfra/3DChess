@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -9,18 +10,20 @@ public class GameManager : MonoBehaviour
 
     public static event Action<GameState> OnGameStateChanged;
 
+
     // Singleton
     private void Awake()
     {
         Instance = this;
     }
 
+
     private void Start()
     {
         UpdateGameState(GameState.Start);
     }
 
-    // Update the game state and run the logic for the current state, including all subscribed to the event.
+    // Update the game state and run the logic for the current state, start event.
     public void UpdateGameState(GameState newState)
     {
         State = newState;
@@ -61,6 +64,13 @@ public class GameManager : MonoBehaviour
     public GameState TurnUpdate()
     {
         if (FactionTurn == Faction.White) return GameState.BlackTurn; else return GameState.WhiteTurn;
+    }
+
+    public void NextTurn()
+    {
+        UnitManager.Instance.SelectedPiece = null;
+        GridManager.Instance.UnhighlightMoveTiles();
+        if (GameManager.Instance.State == GameState.BlackTurn || GameManager.Instance.State == GameState.WhiteTurn) GameManager.Instance.UpdateGameState(GameManager.Instance.TurnUpdate());
     }
 }
 

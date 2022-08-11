@@ -51,7 +51,7 @@ public class UnitManager : MonoBehaviour
                 break;
             case 5:
             case 11:
-                piecePrefab = GetKnight(faction);
+                piecePrefab = GetBishop(faction);
                 if (piecePrefab)
                 {
                     GeneratePiece(piecePrefab, tile);
@@ -63,7 +63,7 @@ public class UnitManager : MonoBehaviour
                 break;
             case 3:
             case 13:
-                piecePrefab = GetBishop(faction);
+                piecePrefab = GetKnight(faction);
                 if (piecePrefab)
                 {
                     GeneratePiece(piecePrefab, tile);
@@ -111,6 +111,8 @@ public class UnitManager : MonoBehaviour
                 break;
         }
     }
+
+    #region Piece Type Getters
 
     // Return the piece information and give the parameter to define the side (faction).
     private BasePiece GetPawn(Faction faction) 
@@ -172,13 +174,15 @@ public class UnitManager : MonoBehaviour
         else return pieceSO.Where(piece => piece.PieceName == Piece.King && piece.faction == faction).First().typePrefab;
     }
 
+    #endregion
+
     // Spawns piece with the given information at the given tile and adds it to the 'pieceList' for clearing.
     private void GeneratePiece(BasePiece piecePrefab, Tile tile)
     {
-        piecePrefab = Instantiate(piecePrefab);
-        piecePrefab.name = piecePrefab.GetPieceName();
-        tile.SetPiece(piecePrefab);
-        pieceList.Add(piecePrefab.gameObject);
+        BasePiece tempPiece = Instantiate(piecePrefab);
+        tempPiece.name = tempPiece.GetPieceName();
+        tile.InitializePiece(tempPiece);
+        pieceList.Add(tempPiece.gameObject);
     }
 
     // Clear (destroy) all pieces in game. Could eventually change it to save them in a dictionary and move them to their new position and reuse them instead of destroying and instantiating again.(Object pooling)
