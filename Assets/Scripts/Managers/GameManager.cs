@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        Castling.Castled += Castled;
     }
-
 
     private void Start()
     {
@@ -70,7 +70,12 @@ public class GameManager : MonoBehaviour
     {
         UnitManager.Instance.SelectedPiece = null;
         GridManager.Instance.UnhighlightMoveTiles();
-        if (GameManager.Instance.State == GameState.BlackTurn || GameManager.Instance.State == GameState.WhiteTurn) GameManager.Instance.UpdateGameState(GameManager.Instance.TurnUpdate());
+        if (Instance.State == GameState.BlackTurn || Instance.State == GameState.WhiteTurn) Instance.UpdateGameState(Instance.TurnUpdate());
+    }
+
+    private void Castled()
+    {
+        NextTurn();
     }
 }
 

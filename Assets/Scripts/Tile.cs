@@ -11,14 +11,13 @@ public class Tile : MonoBehaviour
     private Color defaultColour, highlightColour;
     public bool isInRange;
     public BasePiece OccupiedPiece;
-    private UnitManager unitManager;
     public bool isWalkable => OccupiedPiece == null;
 
     #endregion
 
     private void Awake()
     {
-        unitManager = UnitManager.Instance;
+
     }
 
     #region OnMouseEvents
@@ -40,39 +39,6 @@ public class Tile : MonoBehaviour
         if (OccupiedPiece)
         {
             OccupiedPiece.PieceUnhovered();
-        }
-    }
-
-    // Clicking logic, enables selecting a piece, eating enemy pieces and movement.
-    private void OnMouseDown()
-    {
-        if (GameManager.Instance.State != GameState.WhiteTurn && GameManager.Instance.State != GameState.BlackTurn) return;
-
-        if (OccupiedPiece)
-        {
-            // If it is the piece faction turn select it, otherwise eat enemy piece with the selected piece (if possible).
-            if (OccupiedPiece.GetFaction() == GameManager.Instance.FactionTurn)
-            {
-                SelectPiece();
-            }
-            else
-            {
-                if (unitManager.SelectedPiece != null && isInRange)
-                {
-                    EatEnemyPiece();
-                }
-            }
-        }
-        else
-        {   
-            if (unitManager.SelectedPiece != null)
-            {
-                // Check if the clicked tile is not taken and within movement range, then move selected piece.
-                if (isWalkable && isInRange)
-                {
-                    PieceMove();
-                }
-            }
         }
     }
 
@@ -112,12 +78,6 @@ public class Tile : MonoBehaviour
         if (!GridManager.Instance.MoveTileCheck(this)) ChangeColour(defaultColour);
     }
 
-    // Stop highlight of movement all tiles.
-    private void UnhighlitghtMoveTile()
-    {
-        GridManager.Instance.UnhighlightMoveTiles();
-    }
-
     #endregion
 
     #region Piece Handling
@@ -140,32 +100,6 @@ public class Tile : MonoBehaviour
         piece.MovePieceTo(new Vector3(transform.position.x, transform.position.y + UnitManager.pieceYOffset, transform.position.z - UnitManager.pieceZOffset));
         OccupiedPiece = piece;
         piece.OcuppiedTile = this;
-    }
-    private void SetSelectedPiece(PlayerPiece playerPiece)
-    {
-        unitManager.SetSelectedPiece(playerPiece);
-    }
-    private void PieceReplace(BasePiece newPiece)
-    {
-        OccupiedPiece.PieceEaten();
-        SetPiece(newPiece);
-    }
-    private void PieceMove()
-    {
-        SetPiece(unitManager.SelectedPiece);
-        unitManager.CheckFirstMove();
-        GameManager.Instance.NextTurn();
-    }
-    private void EatEnemyPiece()
-    {
-        PieceReplace(unitManager.SelectedPiece);
-        GameManager.Instance.NextTurn();
-    }
-    private void SelectPiece()
-    {
-        if (unitManager.SelectedPiece != null) UnhighlitghtMoveTile();
-        SetSelectedPiece((PlayerPiece)OccupiedPiece);
-        unitManager.SelectedPiece.PieceMoveHighlight();
     }
 
     #endregion

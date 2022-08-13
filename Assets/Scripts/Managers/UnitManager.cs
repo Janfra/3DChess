@@ -1,34 +1,54 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class UnitManager : MonoBehaviour
 {
-    public static event OnBeforeFirstMove FirstMove;
-    public delegate void OnBeforeFirstMove();
-    
+    public static event Action FirstMove;
+
+    [SerializeField] private Castling castling;
+    private List<PieceInformation> pieceList;
+    private List<ScriptablePiece> pieceSOList;
     public static UnitManager Instance;
-    private List<ScriptablePiece> pieceSO;
-    private List<GameObject> pieceList;
     public PlayerPiece SelectedPiece;
+
+    #region Constants
 
     public const float pieceYOffset = 0.8f;
     public const float pieceZOffset = 0.15f;
     // Max move distance is also the same amount of max directions a piece can be moved, so they are shared.
     public const int MaxMoveDistance = 8;
 
+    #endregion
+
+    [Serializable]
+    private class PieceInformation
+    {
+        public PieceInformation(GameObject newObj, BasePiece newPiece)
+        {
+            PieceObj = newObj;
+            TypeInfo = newPiece;
+            Faction = TypeInfo.GetFaction();
+            TypeName = TypeInfo.GetPieceName();
+        }
+
+        public string TypeName;
+        public GameObject PieceObj;
+        public BasePiece TypeInfo;
+        public Faction Faction;
+    }
+
     private void Awake()
     {
         Instance = this;
-        pieceSO = Resources.LoadAll<ScriptablePiece>("Pieces").ToList();
-        pieceList = new List<GameObject>();
+        pieceSOList = Resources.LoadAll<ScriptablePiece>("Pieces").ToList();
+        pieceList = new List<PieceInformation>();
     }
 
     // Given the tile number and faction, the function will spawn the required piece at the given tile.
     public void SpawnPieces(int currentTile, Tile tile, Faction faction)
     {
-        // Unit information
-        BasePiece piecePrefab;
         switch (currentTile)
         {
             case 2:
@@ -39,78 +59,154 @@ public class UnitManager : MonoBehaviour
             case 12:
             case 14:
             case 16:
-                piecePrefab = GetPawn(faction);
-                if (piecePrefab)
-                {
-                    GeneratePiece(piecePrefab, tile);
-                }
-                else
-                {
-                    DebugHelper.NullWarn("Pawn", "SpawnPieces()");
-                }
+                GeneratePawn(tile, faction);
                 break;
             case 5:
             case 11:
-                piecePrefab = GetBishop(faction);
-                if (piecePrefab)
-                {
-                    GeneratePiece(piecePrefab, tile);
-                }
-                else
-                {
-                    DebugHelper.NullWarn("Knight", "SpawnPieces()");
-                }
+                GenerateBishop(tile, faction);
                 break;
             case 3:
             case 13:
-                piecePrefab = GetKnight(faction);
-                if (piecePrefab)
-                {
-                    GeneratePiece(piecePrefab, tile);
-                }
-                else
-                {
-                    DebugHelper.NullWarn("Bishop", "SpawnPieces()");
-                }
+                GenerateKnight(tile, faction);
                 break;
             case 1:
             case 15:
-                piecePrefab = GetTower(faction);
-                if (piecePrefab)
-                {
-                    GeneratePiece(piecePrefab, tile);
-                }
-                else
-                {
-                    DebugHelper.NullWarn("Tower", "SpawnPieces()");
-                }
-                break;
-            case 9:
-                piecePrefab = GetQueen(faction);
-                if (piecePrefab)
-                {
-                    GeneratePiece(piecePrefab, tile);
-                }
-                else
-                {
-                    DebugHelper.NullWarn("Queen", "SpawnPieces()");
-                }
+                GenerateTower(tile, faction, currentTile);
                 break;
             case 7:
-                piecePrefab = GetKing(faction);
-                if (piecePrefab)
-                {
-                    GeneratePiece(piecePrefab, tile);
-                }
-                else
-                {
-                    DebugHelper.NullWarn("King", "SpawnPieces()");
-                }
+                GenerateQueen(tile, faction);
+                break;
+            case 9:
+                GenerateKing(tile, faction);
                 break;
             default:
                 break;
         }
     }
+
+    #region Generation
+
+    /// <summary>
+    /// Generation of specific type of piece. 
+    /// </summary>
+    /// <param name="tile">Sets the position it will be spawned on</param>
+    /// <param name="faction">Sets the side/colour the piece will be part of</param>
+    private void GeneratePawn(Tile tile, Faction faction)
+    {
+        // Unit information
+        BasePiece piecePrefab = GetPawn(faction);
+        if (piecePrefab)
+        {
+            GeneratePiece(piecePrefab, tile);
+        }
+        else
+        {
+            DebugHelper.NullWarn("Pawn", "SpawnPieces()");
+        }
+    }
+    private void GenerateBishop(Tile tile, Faction faction)
+    {
+        BasePiece piecePrefab = GetBishop(faction);
+        if (piecePrefab)
+        {
+            GeneratePiece(piecePrefab, tile);
+        }
+        else
+        {
+            DebugHelper.NullWarn("Bishop", "SpawnPieces()");
+        }
+    }
+    private void GenerateKnight(Tile tile, Faction faction)
+    {
+        BasePiece piecePrefab = GetKnight(faction);
+        if (piecePrefab)
+        {
+            GeneratePiece(piecePrefab, tile);
+        }
+        else
+        {
+            DebugHelper.NullWarn("Knight", "SpawnPieces()");
+        }
+    }
+    private void GenerateTower(Tile tile, Faction faction, int side)
+    {
+        BasePiece piecePrefab = GetTower(faction);
+        if (piecePrefab)
+        {
+            GeneratePiece(piecePrefab, tile, side);
+        }
+        else
+        {
+            DebugHelper.NullWarn("Tower", "SpawnPieces()");
+        }
+    }
+    private void GenerateQueen(Tile tile, Faction faction)
+    {
+        BasePiece piecePrefab = GetQueen(faction);
+        if (piecePrefab)
+        {
+            GeneratePiece(piecePrefab, tile);
+        }
+        else
+        {
+            DebugHelper.NullWarn("Queen", "SpawnPieces()");
+        }
+    }
+    private void GenerateKing(Tile tile, Faction faction)
+    {
+        BasePiece piecePrefab = GetKing(faction);
+        if (piecePrefab)
+        {
+            GeneratePiece(piecePrefab, tile);
+        }
+        else
+        {
+            DebugHelper.NullWarn("King", "SpawnPieces()");
+        }
+    }
+
+    /// <summary>
+    /// Spawns any piece and adds it to the 'pieceList' for clearing.
+    /// </summary>
+    /// <param name="piecePrefab">Decides the type of piece it will be</param>
+    /// <param name="tile">Sets the position it will be spawned on</param>
+    private void GeneratePiece(BasePiece piecePrefab, Tile tile)
+    {
+        BasePiece tempPiece = Instantiate(piecePrefab);
+        tempPiece.name = tempPiece.GetPieceName();
+        tile.InitializePiece(tempPiece);
+        pieceList.Add(new PieceInformation(gameObject, tempPiece));
+    }
+
+    /// <summary>
+    /// Overloaded version for setting the Tower direction for castling
+    /// </summary>
+    /// <param name="piecePrefab">Decides the type of piece it will be</param>
+    /// <param name="tile">Sets the position it will be spawned on</param>
+    /// <param name="currentTile">Sets the direction of the castling</param>
+    private void GeneratePiece(BasePiece piecePrefab, Tile tile, int currentTile)
+    {
+        BasePiece tempPiece = Instantiate(piecePrefab);
+        tempPiece.name = tempPiece.GetPieceName();
+        tile.InitializePiece(tempPiece);
+        pieceList.Add(new PieceInformation(gameObject, tempPiece));
+        TowerPiece tower = (TowerPiece)tempPiece;
+        tower.SetCastlingDirection(currentTile);
+    }
+
+    /// <summary>
+    /// Clears the board for restarting
+    /// </summary>
+    public void ClearPieces()
+    {
+        foreach (var piece in pieceList)
+        {
+            Destroy(piece.PieceObj);
+        }
+        pieceList.Clear();
+    }
+
+    #endregion
 
     #region Piece Type Getters
 
@@ -119,7 +215,7 @@ public class UnitManager : MonoBehaviour
     {
         if(faction == Faction.White)
         {
-            foreach (var piece in pieceSO)
+            foreach (var piece in pieceSOList)
             {
                 if(piece.PieceName == Piece.Pawn && piece.faction == faction)
                 {
@@ -129,7 +225,7 @@ public class UnitManager : MonoBehaviour
         } 
         else
         {
-            foreach (var piece in pieceSO)
+            foreach (var piece in pieceSOList)
             {
                 if(piece.PieceName == Piece.Pawn && piece.faction == faction)
                 {
@@ -141,14 +237,14 @@ public class UnitManager : MonoBehaviour
     }
     private BasePiece GetKnight(Faction faction)
     {
-        if (faction == Faction.White) return pieceSO.Where(piece => piece.PieceName == Piece.Knight && piece.faction == faction).First().typePrefab;
-        else return pieceSO.Where(piece => piece.PieceName == Piece.Knight && piece.faction == faction).First().typePrefab;
+        if (faction == Faction.White) return pieceSOList.Where(piece => piece.PieceName == Piece.Knight && piece.faction == faction).First().typePrefab;
+        else return pieceSOList.Where(piece => piece.PieceName == Piece.Knight && piece.faction == faction).First().typePrefab;
     }
     private BasePiece GetBishop(Faction faction)
     {
         BasePiece rv;
-        if (faction == Faction.White) rv = pieceSO.Where(piece => piece.PieceName == Piece.Bishop && piece.faction == Faction.White).First().typePrefab;
-        else rv = pieceSO.Where(piece => piece.PieceName == Piece.Bishop && piece.faction == faction).First().typePrefab;
+        if (faction == Faction.White) rv = pieceSOList.Where(piece => piece.PieceName == Piece.Bishop && piece.faction == Faction.White).First().typePrefab;
+        else rv = pieceSOList.Where(piece => piece.PieceName == Piece.Bishop && piece.faction == faction).First().typePrefab;
         if (rv)
         {
             return rv;
@@ -160,40 +256,21 @@ public class UnitManager : MonoBehaviour
     }
     private BasePiece GetTower(Faction faction)
     {
-        if (faction == Faction.White) return pieceSO.Where(piece => piece.PieceName == Piece.Tower && piece.faction == faction).First().typePrefab;
-        else return pieceSO.Where(piece => piece.PieceName == Piece.Tower && piece.faction == faction).First().typePrefab;
+        if (faction == Faction.White) return pieceSOList.Where(piece => piece.PieceName == Piece.Tower && piece.faction == faction).First().typePrefab;
+        else return pieceSOList.Where(piece => piece.PieceName == Piece.Tower && piece.faction == faction).First().typePrefab;
     }
     private BasePiece GetQueen(Faction faction)
     {
-        if (faction == Faction.White) return pieceSO.Where(piece => piece.PieceName == Piece.Queen && piece.faction == faction).First().typePrefab;
-        else return pieceSO.Where(piece => piece.PieceName == Piece.Queen && piece.faction == faction).First().typePrefab;
+        if (faction == Faction.White) return pieceSOList.Where(piece => piece.PieceName == Piece.Queen && piece.faction == faction).First().typePrefab;
+        else return pieceSOList.Where(piece => piece.PieceName == Piece.Queen && piece.faction == faction).First().typePrefab;
     }
     private BasePiece GetKing(Faction faction)
     {
-        if (faction == Faction.White) return pieceSO.Where(piece => piece.PieceName == Piece.King && piece.faction == faction).First().typePrefab;
-        else return pieceSO.Where(piece => piece.PieceName == Piece.King && piece.faction == faction).First().typePrefab;
+        if (faction == Faction.White) return pieceSOList.Where(piece => piece.PieceName == Piece.King && piece.faction == faction).First().typePrefab;
+        else return pieceSOList.Where(piece => piece.PieceName == Piece.King && piece.faction == faction).First().typePrefab;
     }
 
     #endregion
-
-    // Spawns piece with the given information at the given tile and adds it to the 'pieceList' for clearing.
-    private void GeneratePiece(BasePiece piecePrefab, Tile tile)
-    {
-        BasePiece tempPiece = Instantiate(piecePrefab);
-        tempPiece.name = tempPiece.GetPieceName();
-        tile.InitializePiece(tempPiece);
-        pieceList.Add(tempPiece.gameObject);
-    }
-
-    // Clear (destroy) all pieces in game. Could eventually change it to save them in a dictionary and move them to their new position and reuse them instead of destroying and instantiating again.(Object pooling)
-    public void ClearPieces()
-    {
-        foreach (var piece in pieceList)
-        {
-            Destroy(piece);
-        }
-        pieceList.Clear();
-    }
 
     // Sets the clicked piece as the selected piece
     public void SetSelectedPiece(PlayerPiece piece)
@@ -206,4 +283,72 @@ public class UnitManager : MonoBehaviour
     {
         UnitManager.FirstMove?.Invoke();
     }
+
+    #region Castling Methods
+    public void SetCastlingPieces()
+    {
+        SetTowersForCastling();
+        SetKingsForCastling();
+    }
+
+    private void SetTowersForCastling()
+    {
+        foreach (var piece in pieceList)
+        {
+            if (piece.TypeName == Piece.Tower.ToString())
+            {
+                castling.SetTowers((TowerPiece)piece.TypeInfo);
+            }
+        }
+    }
+
+    private void SetKingsForCastling()
+    {
+        foreach (var piece in pieceList)
+        {
+            if (piece.TypeName == Piece.King.ToString())
+            {
+                castling.SetKings((KingPiece)piece.TypeInfo);
+            }
+        }
+    }
+
+    public void SetCastlingTiles(Tile tile)
+    {
+        castling.SetCastlingTiles(tile);
+    }
+
+    public bool CastlingTileCheck(Tile tile)
+    {
+        return castling.CheckCastlingTiles(tile);
+    }
+
+    public void CastlingAttempt(Castling.KingMoveDirection direction)
+    {
+        if (castling.CastlingCheck())
+        {
+            castling.CastleMove(direction);
+        }
+        else
+        {
+
+        }
+    }
+
+    public void KingMoved(Faction faction)
+    {
+        castling.DisableCastling(faction);
+    }
+
+    public Tile GetTowerCastling(Castling.KingMoveDirection direction)
+    {
+        return castling.GetTowerCastling(direction);
+    }
+
+    public Castling.KingMoveDirection GetTileDirection(Tile tile)
+    {
+        return castling.GetTileDirection(tile);
+    }
+
+    #endregion
 }

@@ -33,6 +33,11 @@ public class GridManager : MonoBehaviour
         highlightedTiles = new List<Tile>();
     }
 
+    public int GetGridWidth()
+    {
+        return width;
+    }
+
     #region GridGen
 
     // Creates the board and pieces, then center the camera and update state.
@@ -63,6 +68,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
+        UnitManager.Instance.SetCastlingPieces();
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, 5, -10);
 
         GameManager.Instance.UpdateGameState(GameState.WhiteTurn);

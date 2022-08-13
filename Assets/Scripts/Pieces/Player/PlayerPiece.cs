@@ -24,7 +24,7 @@ public abstract class PlayerPiece : BasePiece
             }
             else
             {
-                DebugHelper.loopNullWarn("Tile", "SetLeftHorizontalTiles()", newPos, gameObject.name);
+                //DebugHelper.loopNullWarn("Tile", "SetLeftHorizontalTiles()", newPos, gameObject.name);
                 break;
             }
             if (isPieceBlocking) break;
@@ -44,7 +44,7 @@ public abstract class PlayerPiece : BasePiece
             }
             else
             {
-                DebugHelper.loopNullWarn("Tile", "SetLeftHorizontalTiles()", newPos, gameObject.name);
+                //DebugHelper.loopNullWarn("Tile", "SetLeftHorizontalTiles()", newPos, gameObject.name);
                 break;
             }
             if (isPieceBlocking) break;
@@ -64,7 +64,7 @@ public abstract class PlayerPiece : BasePiece
             }
             else
             {
-                DebugHelper.loopNullWarn("Tile", "SetLeftHorizontalTiles()", newPos, gameObject.name);
+                //DebugHelper.loopNullWarn("Tile", "SetLeftHorizontalTiles()", newPos, gameObject.name);
                 break;
             }
             if (isPieceBlocking) break;
@@ -84,7 +84,7 @@ public abstract class PlayerPiece : BasePiece
             }
             else
             {
-                DebugHelper.loopNullWarn("Tile", "SetLeftHorizontalTiles()", newPos, gameObject.name);
+                //DebugHelper.loopNullWarn("Tile", "SetLeftHorizontalTiles()", newPos, gameObject.name);
                 break;
             }
             if (isPieceBlocking) break;

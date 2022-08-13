@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,15 @@ public abstract class BasePiece : MonoBehaviour
         if(unitMovement == null)
         {
             unitMovement = GetComponent<ObjectLerper>();
+        }
+        Castling.IsKingSafe += CastlingCheck;
+    }
+
+    private void CastlingCheck(Faction faction)
+    {
+        if (faction != GetFaction())
+        {
+            SetInRange();
         }
     }
 

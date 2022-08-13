@@ -64,7 +64,7 @@ public class KnightPiece : PlayerPiece
         }
         else
         {
-            Debug.Log($"There is no tile in SetXLeftKnightTile(), piece: {gameObject.name}");
+            // Debug.Log($"There is no tile in SetXLeftKnightTile(), piece: {gameObject.name}");
         }
     }
     private void SetZBottomKnightTiles(bool isOffset)
@@ -77,7 +77,7 @@ public class KnightPiece : PlayerPiece
         }
         else
         {
-            Debug.Log($"There is no tile in SetXLeftKnightTile(), piece: {gameObject.name}");
+            // Debug.Log($"There is no tile in SetXLeftKnightTile(), piece: {gameObject.name}");
         }
     }
 

@@ -37,6 +37,6 @@ public class ObjectLerper : MonoBehaviour
     {
         currentPos = Mathf.MoveTowards(currentPos, transition, speed * Time.deltaTime);
         transform.position = Vector3.Lerp(initialPosition, targetPosition, animationCurve.Evaluate(currentPos));
-        Debug.Log($"currentPos = {currentPos}, transition = {transition}, initial position: {initialPosition}, target: {targetPosition}");
+        //Debug.Log($"currentPos = {currentPos}, transition = {transition}, initial position: {initialPosition}, target: {targetPosition}");
     }
 }
