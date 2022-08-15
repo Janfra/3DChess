@@ -43,6 +43,7 @@ public class GridManager : MonoBehaviour
     // Creates the board and pieces, then center the camera and update state.
     public void GenerateGrid()
     {
+        UnitManager unitManager = UnitManager.Instance;
         tiles = new Dictionary<Vector3, Tile>();
         int tileNumber = 0;
 
@@ -53,22 +54,27 @@ public class GridManager : MonoBehaviour
                 Tile currentTile = GenerateTile(x, z);
                 if(z <= 1 && currentTile)
                 {
+                    if(z == 0)
+                    {
+                        unitManager.SetUpgradeTiles(currentTile, z);
+                    }
                     tileNumber++;
                     Debug.Log($"After going up number: {tileNumber}, iteration X: {x}");
-                    UnitManager.Instance.SpawnPieces(tileNumber, currentTile, Faction.White);
+                    unitManager.SpawnPieces(tileNumber, currentTile, Faction.White);
                 }
                 else if (z == 6 && currentTile)
                 {
-                    UnitManager.Instance.SpawnPieces(tileNumber, currentTile, Faction.Black);
+                    unitManager.SpawnPieces(tileNumber, currentTile, Faction.Black);
                 } 
                 else if(z == 7 && currentTile)
                 {
-                    UnitManager.Instance.SpawnPieces(tileNumber - 1, currentTile, Faction.Black);
+                    unitManager.SetUpgradeTiles(currentTile, z);
+                    unitManager.SpawnPieces(tileNumber - 1, currentTile, Faction.Black);
                 }
             }
         }
 
-        UnitManager.Instance.SetCastlingPieces();
+        unitManager.SetCastlingPieces();
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, 5, -10);
 
         GameManager.Instance.UpdateGameState(GameState.WhiteTurn);
@@ -98,7 +104,8 @@ public class GridManager : MonoBehaviour
     // Resets the board without generating the tiles again.
     public void ResetGrid()
     {
-        UnitManager.Instance.ClearPieces();
+        UnitManager unitManager = UnitManager.Instance;
+        unitManager.ClearPieces();
         int tileNumber = 0;
 
         for (int x = 0; x < width; x++)
@@ -110,15 +117,15 @@ public class GridManager : MonoBehaviour
                 {
                     tileNumber++;
                     Debug.Log($"After going up number: {tileNumber}, iteration X: {x}");
-                    UnitManager.Instance.SpawnPieces(tileNumber, currentTile, Faction.White);
+                    unitManager.SpawnPieces(tileNumber, currentTile, Faction.White);
                 }
                 else if (z == 6 && currentTile)
                 {
-                    UnitManager.Instance.SpawnPieces(tileNumber, currentTile, Faction.Black);
+                    unitManager.SpawnPieces(tileNumber, currentTile, Faction.Black);
                 }
                 else if (z == 7 && currentTile)
                 {
-                    UnitManager.Instance.SpawnPieces(tileNumber - 1, currentTile, Faction.Black);
+                    unitManager.SpawnPieces(tileNumber - 1, currentTile, Faction.Black);
                 }
             }
         }

@@ -8,6 +8,7 @@ public class UnitManager : MonoBehaviour
     public static event Action FirstMove;
 
     [SerializeField] private Castling castling;
+    [SerializeField] private PawnUpgrade pawnUpgrade;
     private List<PieceInformation> pieceList;
     private List<ScriptablePiece> pieceSOList;
     public static UnitManager Instance;
@@ -46,6 +47,10 @@ public class UnitManager : MonoBehaviour
         pieceList = new List<PieceInformation>();
     }
 
+
+
+    #region Generation
+
     // Given the tile number and faction, the function will spawn the required piece at the given tile.
     public void SpawnPieces(int currentTile, Tile tile, Faction faction)
     {
@@ -83,8 +88,6 @@ public class UnitManager : MonoBehaviour
                 break;
         }
     }
-
-    #region Generation
 
     /// <summary>
     /// Generation of specific type of piece. 
@@ -210,6 +213,11 @@ public class UnitManager : MonoBehaviour
 
     #region Piece Type Getters
 
+    public ScriptablePiece GetQueenSO(Faction faction)
+    {
+        return pieceSOList.Where(piece => piece.PieceName == Piece.Queen && piece.faction == faction).First();
+    }
+
     // Return the piece information and give the parameter to define the side (faction).
     private BasePiece GetPawn(Faction faction) 
     {
@@ -281,7 +289,7 @@ public class UnitManager : MonoBehaviour
     // Check if its the first move of the selected piece and if there are any left
     public void CheckFirstMove()
     {
-        UnitManager.FirstMove?.Invoke();
+        FirstMove?.Invoke();
     }
 
     #region Castling Methods
@@ -348,6 +356,20 @@ public class UnitManager : MonoBehaviour
     public Castling.KingMoveDirection GetTileDirection(Tile tile)
     {
         return castling.GetTileDirection(tile);
+    }
+
+    #endregion
+
+    #region PawnUpgrade Methods
+
+    public void CheckUpgrade(Tile tile)
+    {
+        pawnUpgrade.CheckUpgrade(tile);
+    }
+
+    public void SetUpgradeTiles(Tile tile, int zPos)
+    {
+        pawnUpgrade.SetUpgradeTiles(tile, zPos);
     }
 
     #endregion

@@ -100,6 +100,8 @@ public class Tile : MonoBehaviour
         piece.MovePieceTo(new Vector3(transform.position.x, transform.position.y + UnitManager.pieceYOffset, transform.position.z - UnitManager.pieceZOffset));
         OccupiedPiece = piece;
         piece.OcuppiedTile = this;
+        UnitManager.Instance.CheckUpgrade(this);
+        UnitManager.Instance.CheckFirstMove();
     }
 
     #endregion

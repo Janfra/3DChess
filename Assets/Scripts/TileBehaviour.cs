@@ -6,11 +6,13 @@ using UnityEngine;
 public class TileBehaviour : MonoBehaviour
 {
     [SerializeField] Tile tile;
+    GameManager gameManager;
     UnitManager unitManager;
 
     private void Awake()
     {
         unitManager = UnitManager.Instance;
+        gameManager = GameManager.Instance;
         if(tile == null)
         {
             tile = GetComponent<Tile>();
@@ -22,12 +24,12 @@ public class TileBehaviour : MonoBehaviour
     // Clicking logic, enables selecting a piece, eating enemy pieces and movement.
     private void OnMouseDown()
     {
-        if (GameManager.Instance.State != GameState.WhiteTurn && GameManager.Instance.State != GameState.BlackTurn) return;
+        if (gameManager.State != GameState.WhiteTurn && gameManager.State != GameState.BlackTurn) return;
 
         if (tile.OccupiedPiece)
         {
             // If it is the piece faction turn select it, otherwise eat enemy piece with the selected piece (if possible).
-            if (tile.OccupiedPiece.GetFaction() == GameManager.Instance.FactionTurn)
+            if (tile.OccupiedPiece.GetFaction() == gameManager.FactionTurn)
             {
                 if(TowerCastlingCheck())
                 {
@@ -77,13 +79,12 @@ public class TileBehaviour : MonoBehaviour
     private void PieceMove()
     {
         tile.SetPiece(unitManager.SelectedPiece);
-        unitManager.CheckFirstMove();
-        GameManager.Instance.NextTurn();
+        if (gameManager.State != GameState.PawnUpgrade) gameManager.NextTurn();
     }
     private void EatEnemyPiece()
     {
         PieceReplace(unitManager.SelectedPiece);
-        GameManager.Instance.NextTurn();
+        if (gameManager.State != GameState.PawnUpgrade) gameManager.NextTurn();
     }
     private void SelectPiece()
     {

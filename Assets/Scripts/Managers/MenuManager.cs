@@ -7,11 +7,14 @@ public class MenuManager : MonoBehaviour
 {
     [SerializeField] private GameObject startScreen;
     [SerializeField] private GameObject victoryScreen;
+    [SerializeField] private GameObject pawnUpgradeScreen;
     [SerializeField] private Text victoryText;
 
     private void Awake()
     {
         GameManager.OnGameStateChanged += OnGameStart;
+        GameManager.OnGameStateChanged += OnGameVictory;
+        GameManager.OnGameStateChanged += OnPawnUpgrade;
     }
 
     private void OnDestroy()
@@ -29,20 +32,23 @@ public class MenuManager : MonoBehaviour
     private void OnGameStart(GameState state)
     {
         startScreen.SetActive(state == GameState.Start);
-        GameManager.OnGameStateChanged += OnGameVictory;
     }
 
     // Activate Victory screen
     private void OnGameVictory(GameState state)
     {
-        victoryScreen.SetActive(state == GameState.Victory);
-        if(GameManager.Instance.FactionTurn == Faction.Black)
+        if(state == GameState.Victory)
         {
-            BlackSideVictory();
-        } 
-        else
-        {
-            WhiteSideVictory();
+            victoryScreen.SetActive(true);
+            if(GameManager.Instance.FactionTurn == Faction.Black)
+            {
+                BlackSideVictory();
+            } 
+            else
+            {
+                WhiteSideVictory();
+            }
+            GameManager.OnGameStateChanged -= OnGameVictory;
         }
     }
 
@@ -68,5 +74,17 @@ public class MenuManager : MonoBehaviour
     public void Rematch()
     {
         GameManager.Instance.UpdateGameState(GameState.GenerateBoard);
+    }
+
+    private void OnPawnUpgrade(GameState state)
+    {
+        if(state == GameState.PawnUpgrade)
+        {
+            pawnUpgradeScreen.SetActive(true);
+        } 
+        else if(pawnUpgradeScreen.activeSelf == true)
+        {
+            pawnUpgradeScreen.SetActive(false);
+        }
     }
 }

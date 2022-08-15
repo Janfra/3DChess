@@ -168,12 +168,6 @@ public class PawnPiece : PlayerPiece
         if (tile.OccupiedPiece != null && tile.OccupiedPiece.GetFaction() != pieceInfo.faction) return true; else return false;
     }
 
-    public void PawnUpgrade(BasePiece newType, Piece newName)
-    {
-        pieceInfo.typePrefab = newType;
-        pieceInfo.PieceName = newName;
-    }
-
 
     //public override void TestInheritance()
     //{

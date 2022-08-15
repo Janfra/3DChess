@@ -265,4 +265,9 @@ public abstract class BasePiece : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+
+    public void SetTypeInfo(ScriptablePiece scriptablePiece)
+    {
+        pieceInfo = scriptablePiece;
+    }
 }

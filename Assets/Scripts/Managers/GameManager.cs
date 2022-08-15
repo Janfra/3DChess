@@ -51,6 +51,11 @@ public class GameManager : MonoBehaviour
             case GameState.BlackTurn:
                 FactionTurn = Faction.Black;
                 break;
+
+            case GameState.PawnUpgrade:
+                Debug.Log("UpgradePawn");
+                GridManager.Instance.UnhighlightMoveTiles();
+                break;
             case GameState.Victory:
                 break;
             case GameState.Pause:
@@ -70,7 +75,7 @@ public class GameManager : MonoBehaviour
     {
         UnitManager.Instance.SelectedPiece = null;
         GridManager.Instance.UnhighlightMoveTiles();
-        if (Instance.State == GameState.BlackTurn || Instance.State == GameState.WhiteTurn) Instance.UpdateGameState(Instance.TurnUpdate());
+        if (Instance.State == GameState.BlackTurn || Instance.State == GameState.WhiteTurn || Instance.State == GameState.PawnUpgrade) Instance.UpdateGameState(Instance.TurnUpdate());
     }
 
     private void Castled()
@@ -85,6 +90,7 @@ public enum GameState
     GenerateBoard,
     WhiteTurn,
     BlackTurn,
+    PawnUpgrade,
     Victory,
     Pause,
 }
