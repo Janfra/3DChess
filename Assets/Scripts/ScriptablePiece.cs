@@ -12,9 +12,9 @@ public class ScriptablePiece : ScriptableObject
 public enum Piece
 {
     Pawn,
+    Tower,
     Knight,
     Bishop,
-    Tower,
     Queen,
     King,
 }

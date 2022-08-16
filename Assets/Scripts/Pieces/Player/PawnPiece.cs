@@ -9,16 +9,15 @@ public class PawnPiece : PlayerPiece
     // Sets the direction the pawn will be moving.
     private bool isMoveUp => pieceInfo.faction == Faction.White;
 
-
-    private void Awake()
-    {
-        UnitManager.FirstMove += OnFirstMove;
-        movement = 2;
-    }
-
     private void OnDestroy()
     {
         UnitManager.FirstMove -= OnFirstMove;
+    }
+
+    private void OnEnable()
+    {
+        UnitManager.FirstMove += OnFirstMove;
+        movement = 2;
     }
 
     private void OnFirstMove()

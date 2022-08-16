@@ -8,7 +8,7 @@ public class KingPiece : PlayerPiece
     private int Movement;
     private bool isCastling;
 
-    private void Awake()
+    private void OnEnable()
     {
         Movement = 1;
         isCastling = true;

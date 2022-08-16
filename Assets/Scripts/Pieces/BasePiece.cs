@@ -25,6 +25,11 @@ public abstract class BasePiece : MonoBehaviour
         Castling.IsKingSafe += CastlingCheck;
     }
 
+    private void OnDestroy()
+    {
+        Castling.IsKingSafe -= CastlingCheck;
+    }
+
     private void CastlingCheck(Faction faction)
     {
         if (faction != GetFaction())

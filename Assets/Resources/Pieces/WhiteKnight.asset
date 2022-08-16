@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: WhiteKnight
   m_EditorClassIdentifier: 
   typePrefab: {fileID: 5552285985303926220, guid: 8355a34a613bfa043915dd072658097c, type: 3}
-  PieceName: 1
+  PieceName: 2
   faction: 0

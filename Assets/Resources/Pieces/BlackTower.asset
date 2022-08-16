@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BlackTower
   m_EditorClassIdentifier: 
   typePrefab: {fileID: -7387178215663550309, guid: f97de5c753501814189e1837a11c952a, type: 3}
-  PieceName: 3
+  PieceName: 1
   faction: 1

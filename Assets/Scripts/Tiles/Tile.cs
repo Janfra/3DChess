@@ -91,7 +91,7 @@ public class Tile : MonoBehaviour
         piece.OcuppiedTile = this;
         Debug.Log($"Piece name: {piece.name}, piece current position: {piece.transform.position}, piece target new position: {newPos}");
     }
-    public void SetPiece(BasePiece piece)
+    public virtual void SetPiece(BasePiece piece)
     {
         if (piece.OcuppiedTile != null)
         {
@@ -100,7 +100,6 @@ public class Tile : MonoBehaviour
         piece.MovePieceTo(new Vector3(transform.position.x, transform.position.y + UnitManager.pieceYOffset, transform.position.z - UnitManager.pieceZOffset));
         OccupiedPiece = piece;
         piece.OcuppiedTile = this;
-        UnitManager.Instance.CheckUpgrade(this);
         UnitManager.Instance.CheckFirstMove();
     }
 

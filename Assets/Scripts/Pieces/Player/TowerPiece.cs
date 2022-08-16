@@ -8,7 +8,7 @@ public class TowerPiece : PlayerPiece
     private bool isCastling;
     private Castling.KingMoveDirection castlingDirection;
 
-    private void Awake()
+    private void OnEnable()
     {
         UnitManager.FirstMove += OnFirstMove;
         Castling.Castled += Castled;
@@ -18,6 +18,7 @@ public class TowerPiece : PlayerPiece
     private void OnDestroy()
     {
         UnitManager.FirstMove -= OnFirstMove;
+        Castling.Castled -= Castled;
     }
 
     public Castling.KingMoveDirection GetCastlingDirection()

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BlackBishop
   m_EditorClassIdentifier: 
   typePrefab: {fileID: -8948117408750315853, guid: 338a98e20da65e04882945cda40fe641, type: 3}
-  PieceName: 2
+  PieceName: 3
   faction: 1

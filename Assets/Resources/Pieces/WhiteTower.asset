@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: WhiteTower
   m_EditorClassIdentifier: 
   typePrefab: {fileID: -3505089629789600684, guid: 422c74588a7e1084b9b7fb68f0345bee, type: 3}
-  PieceName: 3
+  PieceName: 1
   faction: 0

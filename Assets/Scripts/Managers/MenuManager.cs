@@ -21,6 +21,7 @@ public class MenuManager : MonoBehaviour
     {
         GameManager.OnGameStateChanged -= OnGameStart;
         GameManager.OnGameStateChanged -= OnGameVictory;
+        GameManager.OnGameStateChanged -= OnPawnUpgrade;
     }
     private void OnDisable()
     {
@@ -37,9 +38,10 @@ public class MenuManager : MonoBehaviour
     // Activate Victory screen
     private void OnGameVictory(GameState state)
     {
-        if(state == GameState.Victory)
+        bool isState = state == GameState.Victory;
+        victoryScreen.SetActive(isState);
+        if (isState)
         {
-            victoryScreen.SetActive(true);
             if(GameManager.Instance.FactionTurn == Faction.Black)
             {
                 BlackSideVictory();
@@ -48,7 +50,6 @@ public class MenuManager : MonoBehaviour
             {
                 WhiteSideVictory();
             }
-            GameManager.OnGameStateChanged -= OnGameVictory;
         }
     }
 
@@ -78,13 +79,7 @@ public class MenuManager : MonoBehaviour
 
     private void OnPawnUpgrade(GameState state)
     {
-        if(state == GameState.PawnUpgrade)
-        {
-            pawnUpgradeScreen.SetActive(true);
-        } 
-        else if(pawnUpgradeScreen.activeSelf == true)
-        {
-            pawnUpgradeScreen.SetActive(false);
-        }
+        bool isState = state == GameState.PawnUpgrade;
+        pawnUpgradeScreen.SetActive(isState);
     }
 }

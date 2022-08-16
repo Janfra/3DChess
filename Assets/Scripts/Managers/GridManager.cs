@@ -9,7 +9,9 @@ public class GridManager : MonoBehaviour
 
     [SerializeField] private int width, lenght;
     [SerializeField] private Tile tilePrefab;
+    [SerializeField] private Tile upgradeTilePrefab;
     [SerializeField] private Transform cam;
+    [SerializeField] private PawnUpgrade pawnUpgrade;
 
     private Dictionary<Vector3, Tile> tiles;
     private List<Tile> highlightedTiles;
@@ -54,10 +56,6 @@ public class GridManager : MonoBehaviour
                 Tile currentTile = GenerateTile(x, z);
                 if(z <= 1 && currentTile)
                 {
-                    if(z == 0)
-                    {
-                        unitManager.SetUpgradeTiles(currentTile, z);
-                    }
                     tileNumber++;
                     Debug.Log($"After going up number: {tileNumber}, iteration X: {x}");
                     unitManager.SpawnPieces(tileNumber, currentTile, Faction.White);
@@ -68,7 +66,6 @@ public class GridManager : MonoBehaviour
                 } 
                 else if(z == 7 && currentTile)
                 {
-                    unitManager.SetUpgradeTiles(currentTile, z);
                     unitManager.SpawnPieces(tileNumber - 1, currentTile, Faction.Black);
                 }
             }
@@ -83,9 +80,18 @@ public class GridManager : MonoBehaviour
     // Create the tile using the position given with the parameters, set it, return the tile.
     private Tile GenerateTile(int x, int z)
     {
+        Tile spawnedTile;
         Vector3 tilePosition = new Vector3(x, yPos, z - zOffset);
-
-        var spawnedTile = Instantiate(tilePrefab, tilePosition, Quaternion.identity);
+        if(z == 0 || z == lenght - 1)
+        {
+            spawnedTile = Instantiate(upgradeTilePrefab, tilePosition, Quaternion.identity);
+            UpgradeTile setUpgrade = (UpgradeTile)spawnedTile;
+            setUpgrade.SetUpgrade(pawnUpgrade);
+        }
+        else
+        {
+            spawnedTile = Instantiate(tilePrefab, tilePosition, Quaternion.identity); 
+        }
         spawnedTile.name = $"Tile {x} {z}";
 
         SetTileColour(spawnedTile, x, z);
