@@ -16,10 +16,19 @@ public class KingPiece : PlayerPiece
         Castling.Castled += Castled;
     }
 
-
     private void OnDestroy()
     {
         UnitManager.FirstMove -= OnFirstMove;
+    }
+
+    public bool GetIsCastling()
+    {
+        return isCastling;
+    }
+
+    private bool CheckCastling()
+    {
+        return isCastling && UnitManager.Instance.CheckTowersLeft();
     }
 
     public void KingEaten()
@@ -67,7 +76,7 @@ public class KingPiece : PlayerPiece
 
     protected override void SetXTiles(int gridMovement, bool isOffset)
     {
-        if (isCastling)
+        if (CheckCastling())
         {
             byte castlingExtraMove = 1;
             bool isPieceBlocking = false;
@@ -88,7 +97,6 @@ public class KingPiece : PlayerPiece
                 if(newPos == gridMovement)
                 {
                     tile.isInRange = false;
-                    UnitManager.Instance.SetCastlingTiles(tile);
                 }
             }
         } 

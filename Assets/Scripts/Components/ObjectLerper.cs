@@ -3,17 +3,20 @@ using UnityEngine;
 
 public class ObjectLerper : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    [SerializeField] private AnimationCurve animationCurve;
-    private Vector3 targetPosition;
-    private Vector3 initialPosition;
-    private float currentPos;
-    private float transition;
-    private bool isMoving => transform.position != targetPosition;
+    [SerializeField] protected float speed;
+    [SerializeField] protected AnimationCurve animationCurve;
+    protected Vector3 targetPosition;
+    protected Vector3 initialPosition;
+    protected float currentPos;
+    protected float transition;
+    protected bool isMoving => transform.position != targetPosition;
 
     private void Awake()
     {
-        speed = 1f;
+        if(speed == 0f)
+        {
+            speed = 1f;
+        }
         transition = 1f;
         currentPos = 0f;
     }

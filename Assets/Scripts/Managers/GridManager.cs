@@ -10,7 +10,6 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int width, lenght;
     [SerializeField] private Tile tilePrefab;
     [SerializeField] private Tile upgradeTilePrefab;
-    [SerializeField] private Transform cam;
     [SerializeField] private PawnUpgrade pawnUpgrade;
 
     private Dictionary<Vector3, Tile> tiles;
@@ -38,6 +37,18 @@ public class GridManager : MonoBehaviour
     public int GetGridWidth()
     {
         return width;
+    }
+
+    public int GetGridLenght()
+    {
+        return lenght;
+    }
+
+    public Transform GetGridCenter()
+    {
+        GameObject emtpyGO = new GameObject();
+        emtpyGO.transform.position = new Vector3(width / 2 - 0.5f, -4.5f, 1);
+        return emtpyGO.transform;
     }
 
     #region GridGen
@@ -72,7 +83,6 @@ public class GridManager : MonoBehaviour
         }
 
         unitManager.SetCastlingPieces();
-        cam.transform.position = new Vector3((float)width / 2 - 0.5f, 5, -10);
 
         GameManager.Instance.UpdateGameState(GameState.WhiteTurn);
     }

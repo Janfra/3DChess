@@ -6,7 +6,7 @@ using UnityEngine;
 public class TowerPiece : PlayerPiece
 {
     private bool isCastling;
-    private Castling.KingMoveDirection castlingDirection;
+    public Castling.KingMoveDirection castlingDirection;
 
     private void OnEnable()
     {
@@ -31,8 +31,7 @@ public class TowerPiece : PlayerPiece
         if (UnitManager.Instance.SelectedPiece == this)
         {
             Debug.Log("No more castling... Will do later");
-            isCastling = false;
-            UnitManager.FirstMove -= OnFirstMove;
+            NoCastling();
         }
     }
 
@@ -82,10 +81,6 @@ public class TowerPiece : PlayerPiece
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
         }
         return false;
     }
@@ -93,7 +88,7 @@ public class TowerPiece : PlayerPiece
     private void SetCastlingTiles(int gridMovement, bool isOffset)
     {
         bool isKingBlocking = false;
-        bool isPieceBlocking = false;
+        bool isPieceBlocking = true;
         for (int newPos = 0; newPos < gridMovement; newPos += GridManager.TileDistance)
         {
             Tile tile = GetXTile(newPos, isOffset);
@@ -126,16 +121,8 @@ public class TowerPiece : PlayerPiece
         GridManager.Instance.HighlightTile(tile);
     }
 
-    // If the tile of generation is lower than half of the grids width, is going to castle to the right, otherwise left.
-    public void SetCastlingDirection(int side)
+    public bool GetIsCastling()
     {
-        if(side < (GridManager.Instance.GetGridWidth() / 2))
-        {
-            castlingDirection = Castling.KingMoveDirection.Left;
-        } 
-        else
-        {
-            castlingDirection = Castling.KingMoveDirection.Right;
-        }
+        return isCastling;
     }
 }

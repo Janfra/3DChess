@@ -32,7 +32,7 @@ public abstract class BasePiece : MonoBehaviour
 
     private void CastlingCheck(Faction faction)
     {
-        if (faction != GetFaction())
+        if (faction != GetFaction() && gameObject.activeSelf)
         {
             SetInRange();
         }
@@ -186,6 +186,11 @@ public abstract class BasePiece : MonoBehaviour
     /// <param name="isOffset">Sets the direction to check</param>
     protected Tile GetZTile(int newPos, bool isOffset)
     {
+        if (OcuppiedTile == null)
+        {
+            Debug.LogError($"{gameObject.name} at {gameObject.transform.position} has no occupied tile and is running GetTile()");
+            return null;
+        }
         if (isOffset)
         {
             return GridManager.Instance.GetTileAtPosition(new Vector3(OcuppiedTile.transform.position.x, OcuppiedTile.transform.position.y, OcuppiedTile.transform.position.z - newPos - GridManager.TileDistance));
@@ -203,6 +208,11 @@ public abstract class BasePiece : MonoBehaviour
     /// <param name="isOffset">Sets the direction to check</param>
     protected Tile GetXTile(int newPos, bool isOffset)
     {
+        if(OcuppiedTile == null)
+        {
+            Debug.LogError($"{gameObject.name} at {gameObject.transform.position} has no occupied tile and is running GetTile()");
+            return null;
+        }
         if (isOffset)
         {
             return GridManager.Instance.GetTileAtPosition(new Vector3(OcuppiedTile.transform.position.x - newPos - GridManager.TileDistance, OcuppiedTile.transform.position.y, OcuppiedTile.transform.position.z));

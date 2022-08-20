@@ -15,11 +15,6 @@ public class Tile : MonoBehaviour
 
     #endregion
 
-    private void Awake()
-    {
-
-    }
-
     #region OnMouseEvents
 
     // Highlight tile and make piece transparent on hover
@@ -84,7 +79,7 @@ public class Tile : MonoBehaviour
 
     public void InitializePiece(BasePiece piece)
     {
-        Vector3 newPos = new Vector3(transform.position.x, transform.position.y + UnitManager.pieceYOffset, transform.position.z - UnitManager.pieceZOffset);
+        Vector3 newPos = new Vector3(transform.position.x, transform.position.y + UnitManager.pieceYOffset, transform.position.z);
         piece.transform.position = newPos;
         piece.MovePieceTo(newPos);
         OccupiedPiece = piece;
@@ -97,7 +92,7 @@ public class Tile : MonoBehaviour
         {
             piece.OcuppiedTile.OccupiedPiece = null;
         }
-        piece.MovePieceTo(new Vector3(transform.position.x, transform.position.y + UnitManager.pieceYOffset, transform.position.z - UnitManager.pieceZOffset));
+        piece.MovePieceTo(new Vector3(transform.position.x, transform.position.y + UnitManager.pieceYOffset, transform.position.z));
         OccupiedPiece = piece;
         piece.OcuppiedTile = this;
         UnitManager.Instance.CheckFirstMove();

@@ -15,7 +15,6 @@ public class UnitManager : MonoBehaviour
     #region Constants
 
     public const float pieceYOffset = 0.8f;
-    public const float pieceZOffset = 0.15f;
     // Max move distance is also the same amount of max directions a piece can be moved, so they are shared.
     public const int MaxMoveDistance = 8;
 
@@ -65,18 +64,18 @@ public class UnitManager : MonoBehaviour
                 break;
             case 5:
             case 11:
-                GenerateBishop(tile, faction);
+                GenerateBishop(tile, faction, currentTile);
                 break;
             case 3:
             case 13:
-                GenerateKnight(tile, faction);
+                GenerateKnight(tile, faction, currentTile);
                 break;
             case 1:
             case 15:
                 GenerateTower(tile, faction, currentTile);
                 break;
             case 7:
-                GenerateQueen(tile, faction);
+                GenerateQueen(tile, faction, currentTile);
                 break;
             case 9:
                 GenerateKing(tile, faction);
@@ -96,7 +95,7 @@ public class UnitManager : MonoBehaviour
         BasePiece piecePrefab;
         if (faction == Faction.Black)
         {
-           piecePrefab = objectPooler.SpawnPiece(ObjectPooler.poolObjName.BlackPawn);
+            piecePrefab = objectPooler.SpawnPiece(ObjectPooler.poolObjName.BlackPawn);
         }
         else
         {
@@ -111,7 +110,7 @@ public class UnitManager : MonoBehaviour
             DebugHelper.NullWarn("Pawn", "SpawnPieces()");
         }
     }
-    private void GenerateBishop(Tile tile, Faction faction)
+    private void GenerateBishop(Tile tile, Faction faction, int side)
     {
         BasePiece piecePrefab;
         if (faction == Faction.Black)
@@ -125,13 +124,14 @@ public class UnitManager : MonoBehaviour
         if (piecePrefab)
         {
             PieceGenerated(tile, piecePrefab);
+            castling.SetCastlingTiles(tile, GetCastlingDirection(side), faction);
         }
         else
         {
             DebugHelper.NullWarn("Bishop", "SpawnPieces()");
         }
     }
-    private void GenerateKnight(Tile tile, Faction faction)
+    private void GenerateKnight(Tile tile, Faction faction, int side)
     {
         BasePiece piecePrefab;
         if (faction == Faction.Black)
@@ -145,6 +145,7 @@ public class UnitManager : MonoBehaviour
         if (piecePrefab)
         {
             PieceGenerated(tile, piecePrefab);
+            castling.SetCastlingTiles(tile, GetCastlingDirection(side), faction);
         }
         else
         {
@@ -166,14 +167,14 @@ public class UnitManager : MonoBehaviour
         {
             PieceGenerated(tile, piecePrefab);
             TowerPiece tower = (TowerPiece)piecePrefab;
-            tower.SetCastlingDirection(side);
+            tower.castlingDirection = GetCastlingDirection(side);
         }
         else
         {
             DebugHelper.NullWarn("Tower", "SpawnPieces()");
         }
     }
-    private void GenerateQueen(Tile tile, Faction faction)
+    private void GenerateQueen(Tile tile, Faction faction, int side)
     {
         BasePiece piecePrefab;
         if (faction == Faction.Black)
@@ -187,6 +188,7 @@ public class UnitManager : MonoBehaviour
         if (piecePrefab)
         {
             PieceGenerated(tile, piecePrefab);
+            castling.SetCastlingTiles(tile, GetCastlingDirection(side), faction);
         }
         else
         {
@@ -276,21 +278,16 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-    public void SetCastlingTiles(Tile tile)
+    public bool KingCastlingCheck(Tile tile)
     {
-        castling.SetCastlingTiles(tile);
-    }
-
-    public bool CastlingTileCheck(Tile tile)
-    {
-        return castling.CheckCastlingTiles(tile);
+        return (castling.CheckCastlingTiles(tile) && castling.TowerCheck(GetTileDirection(tile)));
     }
 
     public void CastlingAttempt(Castling.KingMoveDirection direction)
     {
-        if (castling.CastlingCheck())
+        if (castling.CastlingCheck(direction))
         {
-            castling.CastleMove(direction);
+            castling.StartCastling(direction);
         }
     }
 
@@ -307,6 +304,29 @@ public class UnitManager : MonoBehaviour
     public Castling.KingMoveDirection GetTileDirection(Tile tile)
     {
         return castling.GetTileDirection(tile);
+    }
+
+    // If the tile of generation is lower than half of the grids width, is going to castle to the right, otherwise left.
+    public Castling.KingMoveDirection GetCastlingDirection(int side)
+    {
+        if (side < (GridManager.Instance.GetGridWidth() / 2))
+        {
+            return Castling.KingMoveDirection.Left;
+        }
+        else
+        {
+            return Castling.KingMoveDirection.Right;
+        }
+    }
+
+    public bool CheckTowersLeft()
+    {
+        return castling.CheckTowersLeft();
+    }
+
+    public bool CheckKingCastling()
+    {
+        return castling.CheckKingCastling();
     }
 
     #endregion

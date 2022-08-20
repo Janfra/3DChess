@@ -53,11 +53,11 @@ public class TileBehaviour : MonoBehaviour
             if (unitManager.SelectedPiece != null)
             {
                 // Check if the clicked tile is not taken and within movement range, then move selected piece.
-                if (tile.isWalkable && tile.isInRange && !unitManager.CastlingTileCheck(tile))
+                if (tile.isWalkable && tile.isInRange && !unitManager.KingCastlingCheck(tile))
                 {
                     PieceMove();
                 } 
-                else if(tile.isWalkable && unitManager.CastlingTileCheck(tile))
+                else if(tile.isWalkable && unitManager.KingCastlingCheck(tile))
                 {
                     unitManager.CastlingAttempt(unitManager.GetTileDirection(tile));
                 }
@@ -103,13 +103,22 @@ public class TileBehaviour : MonoBehaviour
     {
         if(unitManager.SelectedPiece != null)
         {
-            bool rv;
-            if(rv = (unitManager.SelectedPiece.GetPieceName() == Piece.Tower.ToString()) && (tile.OccupiedPiece.GetPieceName() == Piece.King.ToString()))
+            if (unitManager.CheckKingCastling()) return false;
+            if(TowerCheck(unitManager.SelectedPiece)) return true; 
+        }
+        return false;
+    }
+
+    private bool TowerCheck(BasePiece towerCheck)
+    {
+        if ((unitManager.SelectedPiece.GetPieceName() == Piece.Tower.ToString()) && (tile.OccupiedPiece.GetPieceName() == Piece.King.ToString()))
+        {
+            TowerPiece tower = (TowerPiece)towerCheck;
+            if (tower.GetIsCastling())
             {
-                TowerPiece tower = (TowerPiece)unitManager.SelectedPiece;
                 unitManager.CastlingAttempt(tower.GetCastlingDirection());
+                return true; 
             }
-            return rv; 
         }
         return false;
     }

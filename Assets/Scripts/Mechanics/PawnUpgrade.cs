@@ -51,6 +51,11 @@ public class PawnUpgrade : MonoBehaviour
         gameManager.NextTurn();
     }
 
+    /// <summary>
+    /// Returns the key to access the pool for the piece type given depending on the current turn
+    /// </summary>
+    /// <param name="pieceType">Piece type name that is trying to be accessed</param>
+    /// <returns>Key to pool type requested from current faction</returns>
     private ObjectPooler.poolObjName GetPieceToSpawn(Piece pieceType)
     {
         int factionSet = 0;
@@ -73,7 +78,7 @@ public class PawnUpgrade : MonoBehaviour
             case Piece.Pawn:
             case Piece.King:
             default:
-                throw new ArgumentException($"Tried to upgrade to a {pieceType}");
+                throw new ArgumentException($"Tried to upgrade to a {pieceType}, which is not valid");
         }
         return (ObjectPooler.poolObjName)rv;
     }
