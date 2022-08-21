@@ -48,6 +48,7 @@ public class GridManager : MonoBehaviour
     {
         GameObject emtpyGO = new GameObject();
         emtpyGO.transform.position = new Vector3(width / 2 - 0.5f, -4.5f, 1);
+        emtpyGO.name = "GridCenter";
         return emtpyGO.transform;
     }
 

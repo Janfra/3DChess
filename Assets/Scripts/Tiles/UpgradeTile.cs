@@ -11,9 +11,9 @@ public class UpgradeTile : Tile
         upgrade = newUpgrade;
     }
 
-    public override void SetPiece(BasePiece piece)
+    public override void SetOccupied(BasePiece piece)
     {
-        base.SetPiece(piece);
+        base.SetOccupied(piece);
         CheckUpgrade();
     }
 

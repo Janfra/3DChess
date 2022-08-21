@@ -74,11 +74,11 @@ public class TileBehaviour : MonoBehaviour
     private void PieceReplace(BasePiece newPiece)
     {
         tile.OccupiedPiece.PieceEaten();
-        tile.SetPiece(newPiece);
+        tile.SetOccupied(newPiece);
     }
     private void PieceMove()
     {
-        tile.SetPiece(unitManager.SelectedPiece);
+        tile.SetOccupied(unitManager.SelectedPiece);
         if (gameManager.State != GameState.PawnUpgrade) gameManager.NextTurn();
     }
     private void EatEnemyPiece()

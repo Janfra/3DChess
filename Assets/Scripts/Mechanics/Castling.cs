@@ -244,7 +244,7 @@ public class Castling : MonoBehaviour
     private void TowerCastleMove(Tile tile, KingMoveDirection direction)
     {
         Tile newPos = GetTowerNewTile(tile, direction);
-        newPos.SetPiece(tile.OccupiedPiece);
+        newPos.SetOccupied(tile.OccupiedPiece);
     }
 
     /// <summary>
@@ -257,7 +257,7 @@ public class Castling : MonoBehaviour
         Tile newPos = GetKingNewTile(tile, direction);
         KingPiece king = (KingPiece)tile.OccupiedPiece;
         king.KingMoved();
-        newPos.SetPiece(tile.OccupiedPiece);
+        newPos.SetOccupied(tile.OccupiedPiece);
     }
 
     public bool CheckTowersLeft()

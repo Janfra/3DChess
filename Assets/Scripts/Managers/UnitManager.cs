@@ -229,8 +229,13 @@ public class UnitManager : MonoBehaviour
         objectPooler.DespawnAll();
         foreach (var piece in pieceList)
         {
-            piece.TypeInfo.OcuppiedTile.OccupiedPiece = null;
-            piece.TypeInfo.OcuppiedTile = null;
+            // Change colour back to normal
+            piece.TypeInfo.PieceUnhovered();
+            if(piece.TypeInfo.OcuppiedTile != null)
+            {
+                piece.TypeInfo.OcuppiedTile.OccupiedPiece = null;
+                piece.TypeInfo.OcuppiedTile = null;
+            }
         }
         pieceList.Clear();
     }

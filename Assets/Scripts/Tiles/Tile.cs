@@ -86,7 +86,16 @@ public class Tile : MonoBehaviour
         piece.OcuppiedTile = this;
         Debug.Log($"Piece name: {piece.name}, piece current position: {piece.transform.position}, piece target new position: {newPos}");
     }
-    public virtual void SetPiece(BasePiece piece)
+
+    // If I could redo it I would instead make the piece handle this to avoid all the checks and simply have the piece handle it as needed. Tile would only call for the piece to start handling.
+    public virtual void SetOccupied(BasePiece piece)
+    {
+        PieceSetting(piece);
+        piece.PieceUnhovered();
+        UnitManager.Instance.CheckFirstMove();
+    }
+
+    private void PieceSetting(BasePiece piece)
     {
         if (piece.OcuppiedTile != null)
         {
@@ -95,7 +104,6 @@ public class Tile : MonoBehaviour
         piece.MovePieceTo(new Vector3(transform.position.x, transform.position.y + UnitManager.pieceYOffset, transform.position.z));
         OccupiedPiece = piece;
         piece.OcuppiedTile = this;
-        UnitManager.Instance.CheckFirstMove();
     }
 
     #endregion

@@ -46,7 +46,7 @@ public class PawnUpgrade : MonoBehaviour
 
     private void UpgradeChosen(BasePiece piece)
     {
-        currentUpgradeTile.SetPiece(piece);
+        currentUpgradeTile.SetOccupied(piece);
         UnitManager.Instance.AddToPieceList(piece);
         gameManager.NextTurn();
     }
@@ -64,16 +64,16 @@ public class PawnUpgrade : MonoBehaviour
         switch (pieceType)
         {
             case Piece.Tower:
-                rv = ((int)Piece.Tower * 2) - factionSet;
+                rv = ((int)Piece.Tower * 2) + factionSet;
                 break;
             case Piece.Knight:
-                rv = ((int)Piece.Knight * 2) - factionSet;
+                rv = ((int)Piece.Knight * 2) + factionSet;
                 break;
             case Piece.Bishop:
-                rv = ((int)Piece.Bishop * 2) - factionSet;
+                rv = ((int)Piece.Bishop * 2) + factionSet;
                 break;
             case Piece.Queen:
-                rv = ((int)Piece.Queen * 2) - factionSet;
+                rv = ((int)Piece.Queen * 2) + factionSet;
                 break;
             case Piece.Pawn:
             case Piece.King:
