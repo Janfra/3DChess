@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tile: {fileID: 2321927481320444378}
+  infoDisplay: {fileID: 0}
 --- !u!114 &2321927481320444378
 MonoBehaviour:
   m_ObjectHideFlags: 0

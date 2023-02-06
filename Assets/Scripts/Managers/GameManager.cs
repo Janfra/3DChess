@@ -24,6 +24,14 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.Start);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+
     // Update the game state and run the logic for the current state, start event.
     public void UpdateGameState(GameState newState)
     {

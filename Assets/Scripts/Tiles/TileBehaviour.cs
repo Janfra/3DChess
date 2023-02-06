@@ -5,7 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Tile))]
 public class TileBehaviour : MonoBehaviour
 {
-    [SerializeField] Tile tile;
+    [SerializeField] private Tile tile;
+    [SerializeField] private InfoDisplay infoDisplay;
     GameManager gameManager;
     UnitManager unitManager;
 
@@ -18,6 +19,7 @@ public class TileBehaviour : MonoBehaviour
             tile = GetComponent<Tile>();
         }
     }
+
 
     #region OnMouseEvents
 
@@ -67,6 +69,19 @@ public class TileBehaviour : MonoBehaviour
 
     #endregion
 
+    #region Highlight Handling
+
+    /// <summary>
+    /// Stop highlight of movement all tiles.
+    /// </summary>
+    private void UnhighlitghtMoveTile()
+    {
+        GridManager.Instance.UnhighlightMoveTiles();
+    }
+
+    #endregion
+
+    #region Piece Handling
     private void SetSelectedPiece(PlayerPiece playerPiece)
     {
         unitManager.SetSelectedPiece(playerPiece);
@@ -93,12 +108,9 @@ public class TileBehaviour : MonoBehaviour
         unitManager.SelectedPiece.PieceMoveHighlight();
     }
 
-    // Stop highlight of movement all tiles.
-    private void UnhighlitghtMoveTile()
-    {
-        GridManager.Instance.UnhighlightMoveTiles();
-    }
+    #endregion
 
+    #region Castling Handling
     private bool TowerCastlingCheck()
     {
         if(unitManager.SelectedPiece != null)
@@ -122,4 +134,6 @@ public class TileBehaviour : MonoBehaviour
         }
         return false;
     }
+
+    #endregion
 }
